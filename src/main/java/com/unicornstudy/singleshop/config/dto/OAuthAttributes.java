@@ -26,10 +26,8 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if (registrationId.equals("naver")) {
-            System.out.println(userNameAttributeName);
             return ofNaver("id", attributes);
         } else if (registrationId.equals("kakao")){
-            System.out.println(userNameAttributeName);
             return ofKakao("id", attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
@@ -37,7 +35,6 @@ public class OAuthAttributes {
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakao_account = (Map<String, Object>) attributes.get("kakao_account");
-        //System.out.println(kakao_account);
         Map<String, Object> profile = (Map<String, Object>) kakao_account.get("profile");
         return OAuthAttributes.builder()
                 .name((String) profile.get("nickname"))
