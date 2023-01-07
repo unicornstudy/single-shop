@@ -1,16 +1,16 @@
-package com.unicornstudy.singleshop.web.dto;
+package com.unicornstudy.singleshop.items.dto;
 
-import com.unicornstudy.singleshop.domain.items.Items;
+import com.unicornstudy.singleshop.items.Items;
 import lombok.Getter;
 
 @Getter
-public class ItemsResponseDto {
+public abstract class ItemsResponseDto {
 
     private Long id;
     private String name;
-    private int price;
+    private Integer price;
     private String description;
-    private int quantity;
+    private Integer quantity;
 
     public ItemsResponseDto(Items items) {
         this.id = items.getId();
@@ -19,4 +19,5 @@ public class ItemsResponseDto {
         this.description = items.getDescription();
         this.quantity = items.getQuantity();
     }
+
 }

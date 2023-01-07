@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.domain;
+package com.unicornstudy.singleshop.items;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -18,6 +18,6 @@ public abstract class BaseTimeEntity {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    public LocalDateTime modifiedDate;
 
 }
