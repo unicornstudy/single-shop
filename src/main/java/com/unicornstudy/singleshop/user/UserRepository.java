@@ -1,5 +1,6 @@
-package com.unicornstudy.singleshop.domain.user;
+package com.unicornstudy.singleshop.user;
 
+import com.unicornstudy.singleshop.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

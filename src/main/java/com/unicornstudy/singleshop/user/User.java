@@ -1,13 +1,16 @@
-package com.unicornstudy.singleshop.domain.user;
+package com.unicornstudy.singleshop.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +28,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @Builder
-    public User(String name, String email, String picture, Role role) {
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
-        this.role = role;
-    }
 
     public User update(String name, String picture) {
         this.name = name;

@@ -1,6 +1,7 @@
-package com.unicornstudy.singleshop.config;
+package com.unicornstudy.singleshop.oauth2.config;
 
-import com.unicornstudy.singleshop.domain.user.Role;
+import com.unicornstudy.singleshop.oauth2.CustomOauth2UserService;
+import com.unicornstudy.singleshop.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;

@@ -1,9 +1,9 @@
-package com.unicornstudy.singleshop.config;
+package com.unicornstudy.singleshop.oauth2;
 
-import com.unicornstudy.singleshop.config.dto.OAuthAttributes;
-import com.unicornstudy.singleshop.config.dto.SessionUser;
-import com.unicornstudy.singleshop.domain.user.User;
-import com.unicornstudy.singleshop.domain.user.UserRepository;
+import com.unicornstudy.singleshop.user.User;
+import com.unicornstudy.singleshop.user.UserRepository;
+import com.unicornstudy.singleshop.oauth2.dto.OAuthAttributes;
+import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

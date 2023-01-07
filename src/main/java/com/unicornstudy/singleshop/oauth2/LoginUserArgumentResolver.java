@@ -1,6 +1,6 @@
-package com.unicornstudy.singleshop.config;
+package com.unicornstudy.singleshop.oauth2;
 
-import com.unicornstudy.singleshop.config.dto.SessionUser;
+import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

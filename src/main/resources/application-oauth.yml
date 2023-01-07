@@ -15,19 +15,19 @@ spring:
             user-name-attribute: id
         registration:
           google:
-            clientId: 152706133366-ckor721johnrir9mal9t3qdd8phnsdvj.apps.googleusercontent.com
-            clientSecret: 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x
+            clientId: "${googleclientid}"
+            clientSecret: "${googleclientsecret}"
             scope: profile,email
           naver:
-            clientId: tn9SUgiOQnqEees9kCdK
-            clientSecret: 32qsBynot0
+            clientId: "${naverclientid}"
+            clientSecret: "${naverclientsecret}"
             redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
             authorizationGrantType: authorization_code
             scope: name,email,profile_image
             clientName: Naver
           kakao:
-            clientId: a61dfd3054779c4996aff7a1433717dd
-            clientSecret: NKHmAh74yiQvwjjPIE8QLQlEJJSq4tKJ
+            clientId: "${kakaoclientid}"
+            clientSecret: "${kakaoclientsecret}"
             redirectUri: http://localhost:8080/login/oauth2/code/kakao
             authorizationGrantType: authorization_code
             scope: profile_image,account_email,profile_nickname

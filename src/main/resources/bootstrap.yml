@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: vault://
+  application:
+    name: oauth
+  cloud:
+    vault:
+      kv:
+        enabled: true
+      port: 8200
+      scheme: http
+      token: hvs.bzfC4Vt7GCQoIxxmlNIeAxX1
