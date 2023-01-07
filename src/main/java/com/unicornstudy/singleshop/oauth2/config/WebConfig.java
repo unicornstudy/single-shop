@@ -1,5 +1,6 @@
-package com.unicornstudy.singleshop.config;
+package com.unicornstudy.singleshop.oauth2.config;
 
+import com.unicornstudy.singleshop.oauth2.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

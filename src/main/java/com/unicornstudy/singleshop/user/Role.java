@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.domain.user;
+package com.unicornstudy.singleshop.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

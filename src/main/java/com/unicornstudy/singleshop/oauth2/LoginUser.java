@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.config;
+package com.unicornstudy.singleshop.oauth2;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
