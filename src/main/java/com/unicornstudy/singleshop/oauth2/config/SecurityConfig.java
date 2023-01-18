@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/favicon.ico","/","/css/**","/images/**",
-                        "/js/**").permitAll()
+                        "/js/**", "/api/**").permitAll()
                 .requestMatchers("").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()

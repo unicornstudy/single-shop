@@ -1,5 +1,6 @@
 package com.unicornstudy.singleshop.user;
 
+import com.unicornstudy.singleshop.carts.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+        cart.setCartOwner(this);
+    }
 
     public User update(String name, String picture) {
         this.name = name;
