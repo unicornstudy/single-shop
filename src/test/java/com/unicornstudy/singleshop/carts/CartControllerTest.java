@@ -120,17 +120,14 @@ public class CartControllerTest {
 
     @Test
     public void 장바구니_삭제_테스트() throws Exception{
-        CartRequestDto requestDto = new CartRequestDto();
-        requestDto.setId(1L);
         when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         mvc
-                .perform(delete("/api/carts").session(session)
+                .perform(delete("/api/carts/" + cartItem.getId()).session(session)
                         .with(csrf())
                         .characterEncoding("utf-8")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -164,6 +161,7 @@ public class CartControllerTest {
 
     private void setCart() {
         cartItem = CartItem.createCartItem(item);
+        cartItem.setId(1L);
         cart = Cart.createCart(user, cartItem);
     }
 }
