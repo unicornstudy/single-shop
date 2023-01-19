@@ -25,8 +25,8 @@ public class CartController {
         cartService.addCart(user.getEmail(), requestDto.getId());
     }
 
-    @DeleteMapping
-    public void removeCart(@LoginUser SessionUser user, @RequestBody CartRequestDto requestDto) {
-        cartService.removeCartItem(user.getEmail(), requestDto.getId());
+    @DeleteMapping("/{id}")
+    public void removeCart(@LoginUser SessionUser user, @PathVariable Long id) {
+        cartService.removeCartItem(user.getEmail(), id);
     }
 }
