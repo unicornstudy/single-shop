@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -26,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -92,7 +94,7 @@ public class CartControllerTest {
         List<ReadCartResponseDto> responseDtoList = new ArrayList<>();
         responseDtoList.add(responseDto);
 
-        when(cartService.findCartItemListByUser(any(String.class))).thenReturn(responseDtoList);
+        when(cartService.findCartItemListByUser(any(String.class), any(Pageable.class))).thenReturn(responseDtoList);
 
         mvc
                 .perform(get("/api/carts").session(session))
@@ -102,12 +104,29 @@ public class CartControllerTest {
     }
 
     @Test
-    public void 장바구니_추가_테스트() throws Exception{
+    public void 장바구니_조회_페이징_테스트() throws Exception {
+        ReadCartResponseDto responseDto = new ReadCartResponseDto(cartItem);
+        List<ReadCartResponseDto> responseDtoList = new ArrayList<>();
+        int size = 10;
+        for (int i = 0; i < 100; i++) {
+            responseDtoList.add(responseDto);
+        }
+        when(cartService.findCartItemListByUser(any(String.class), any(Pageable.class))).thenReturn(responseDtoList.stream().limit(size).collect(Collectors.toList()));
+
+        mvc
+                .perform(get("/api/carts?page=0&size=10&sort=id,DESC").session(session)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.*", hasSize(size)));
+    }
+    @Test
+    public void 장바구니_추가_테스트() throws Exception {
         CartRequestDto requestDto = new CartRequestDto();
         requestDto.setId(1L);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
-        when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
         mvc
                 .perform(post("/api/carts").session(session)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,8 +138,8 @@ public class CartControllerTest {
     }
 
     @Test
-    public void 장바구니_삭제_테스트() throws Exception{
-        when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(cart));
+    public void 장바구니_삭제_테스트() throws Exception {
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         mvc
@@ -161,7 +180,7 @@ public class CartControllerTest {
 
     private void setCart() {
         cartItem = CartItem.createCartItem(item);
-        cartItem.setId(1L);
+        cartItem.createIdForTest(1L);
         cart = Cart.createCart(user, cartItem);
     }
 }

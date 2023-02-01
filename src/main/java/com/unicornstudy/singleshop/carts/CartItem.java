@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +17,25 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Items item;
 
-    public void setCartItemOwner(Cart cart) {
+    public void linkCartItemOwner(Cart cart) {
         this.cart = cart;
     }
 
     public static CartItem createCartItem(Items item) {
         CartItem cartItem = new CartItem();
-        cartItem.setItem(item);
+        cartItem.linkItem(item);
         return cartItem;
+    }
+
+    private void linkItem(Items item) {
+        this.item = item;
+    }
+
+    public void createIdForTest(Long id) {
+        this.id = id;
     }
 }
