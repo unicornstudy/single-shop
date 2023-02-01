@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +27,19 @@ public class Cart {
 
     private int count;
 
-    public void setCartOwner(User user) {
+    public void linkCartOwner(User user) {
         this.user = user;
     }
 
-    public void addCartItem(CartItem cartItem) {
+    public Cart addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
-        cartItem.setCartItemOwner(this);
+        cartItem.linkCartItemOwner(this);
         count++;
         price += cartItem.getItem().getPrice();
+        return this;
     }
 
-    public void removeCart(CartItem cartItem) {
+    public void subtractCartItem(CartItem cartItem) {
         cartItems.remove(cartItem);
         count--;
         price -= cartItem.getItem().getPrice();
@@ -47,10 +47,15 @@ public class Cart {
 
     public static Cart createCart(User user, CartItem cartItem) {
         Cart cart = new Cart();
-        cart.setPrice(0);
-        cart.setCount(0);
+        cart.initializeCart();
         cart.addCartItem(cartItem);
-        user.setCart(cart);
+        user.createCart(cart);
         return cart;
     }
+
+    private void initializeCart() {
+        this.price = 0;
+        this.count = 0;
+    }
 }
+

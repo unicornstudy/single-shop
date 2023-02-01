@@ -5,6 +5,9 @@ import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +19,8 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public List<ReadCartResponseDto> readCart(@LoginUser SessionUser user) {
-        return cartService.findCartItemListByUser(user.getEmail());
+    public List<ReadCartResponseDto> readCart(@LoginUser SessionUser user, @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return cartService.findCartItemListByUser(user.getEmail(), pageable);
     }
 
     @PostMapping

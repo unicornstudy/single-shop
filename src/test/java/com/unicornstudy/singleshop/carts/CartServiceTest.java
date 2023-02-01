@@ -1,6 +1,8 @@
 package com.unicornstudy.singleshop.carts;
 
 import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
+import com.unicornstudy.singleshop.carts.exception.CartItemNotFoundException;
+import com.unicornstudy.singleshop.carts.exception.CartNotFoundException;
 import com.unicornstudy.singleshop.items.Items;
 import com.unicornstudy.singleshop.items.ItemsRepository;
 import com.unicornstudy.singleshop.user.Role;
@@ -11,13 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +70,7 @@ public class CartServiceTest {
     public void 장바구니_생성() {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
-        when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartRepository.findAll()).thenReturn(cartList);
 
         cartService.addCart(user.getEmail(), item.getId());
@@ -77,7 +84,7 @@ public class CartServiceTest {
     @Test
     public void 장바구니_삭제() {
         when(cartRepository.findAll()).thenReturn(cartList);
-        when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         cartService.removeCartItem(user.getEmail(), item.getId());
@@ -88,10 +95,37 @@ public class CartServiceTest {
 
     @Test
     public void 장바구니_조회() {
-        when(cartRepository.findByUser(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
 
-        List<ReadCartResponseDto> result = cartService.findCartItemListByUser(user.getEmail());
+        List<ReadCartResponseDto> result = cartService.findAllCartItemListByUser(user.getEmail());
         assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void 장바구니_조회_페이징() {
+        for (int i = 0; i < 100; i++) {
+            cart.addCartItem(cartItem);
+        }
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        when(cartItemRepository.findAllByCart_Id(any(), any())).thenReturn(cart.getCartItems().stream().limit(10).collect(Collectors.toList()));
+        List<ReadCartResponseDto> result = cartService.findCartItemListByUser(user.getEmail(), pageable);
+        assertThat(result.size()).isEqualTo(10);
+    }
+
+    @Test
+    public void 장바구니_조회_예외() {
+        assertThatThrownBy(() -> cartService.findAllCartItemListByUser(user.getEmail()))
+                .isInstanceOf(CartNotFoundException.class)
+                .hasMessage(CartNotFoundException.ERROR_MESSAGE);
+    }
+
+    @Test
+    public void 장바구니_상품_조회_예외() {
+        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        assertThatThrownBy(() -> cartService.removeCartItem(user.getEmail(), 1l))
+                .isInstanceOf(CartItemNotFoundException.class)
+                .hasMessage(CartItemNotFoundException.ERROR_MESSAGE);
     }
 
     private void setItem() {
