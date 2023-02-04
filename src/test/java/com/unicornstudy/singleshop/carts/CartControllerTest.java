@@ -122,11 +122,10 @@ public class CartControllerTest {
     }
     @Test
     public void 장바구니_추가_테스트() throws Exception {
-        CartRequestDto requestDto = new CartRequestDto();
-        requestDto.setId(1L);
+        CartRequestDto requestDto = new CartRequestDto(1L);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
         mvc
                 .perform(post("/api/carts").session(session)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +138,7 @@ public class CartControllerTest {
 
     @Test
     public void 장바구니_삭제_테스트() throws Exception {
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         mvc
