@@ -37,9 +37,8 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
-    public void createCart(Cart cart) {
+    public void mappingCart(Cart cart) {
         this.cart = cart;
-        cart.linkCartOwner(this);
     }
 
     public User update(String name, String picture) {

@@ -27,13 +27,13 @@ public class Cart {
 
     private int count;
 
-    public void linkCartOwner(User user) {
+    public void mappingUser(User user) {
         this.user = user;
     }
 
     public Cart addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
-        cartItem.linkCartItemOwner(this);
+        cartItem.mappingCart(this);
         count++;
         price += cartItem.getItem().getPrice();
         return this;
@@ -47,15 +47,16 @@ public class Cart {
 
     public static Cart createCart(User user, CartItem cartItem) {
         Cart cart = new Cart();
-        cart.initializeCart();
-        cart.addCartItem(cartItem);
-        user.createCart(cart);
+        cart.initializeCart(cartItem);
+        user.mappingCart(cart);
+        cart.mappingUser(user);
         return cart;
     }
 
-    private void initializeCart() {
-        this.price = 0;
-        this.count = 0;
+    private void initializeCart(CartItem cartItem) {
+        cartItem.mappingCart(this);
+        this.price = cartItem.getItem().getPrice();
+        this.count = 1;
     }
 }
 

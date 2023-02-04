@@ -70,7 +70,7 @@ public class CartServiceTest {
     public void 장바구니_생성() {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartRepository.findAll()).thenReturn(cartList);
 
         cartService.addCart(user.getEmail(), item.getId());
@@ -84,7 +84,7 @@ public class CartServiceTest {
     @Test
     public void 장바구니_삭제() {
         when(cartRepository.findAll()).thenReturn(cartList);
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(cart));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         cartService.removeCartItem(user.getEmail(), item.getId());
@@ -95,7 +95,7 @@ public class CartServiceTest {
 
     @Test
     public void 장바구니_조회() {
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
 
         List<ReadCartResponseDto> result = cartService.findAllCartItemListByUser(user.getEmail());
         assertThat(result.size()).isEqualTo(1);
@@ -107,8 +107,8 @@ public class CartServiceTest {
             cart.addCartItem(cartItem);
         }
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
-        when(cartItemRepository.findAllByCart_Id(any(), any())).thenReturn(cart.getCartItems().stream().limit(10).collect(Collectors.toList()));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        when(cartItemRepository.findAllByCartId(any(), any())).thenReturn(cart.getCartItems().stream().limit(10).collect(Collectors.toList()));
         List<ReadCartResponseDto> result = cartService.findCartItemListByUser(user.getEmail(), pageable);
         assertThat(result.size()).isEqualTo(10);
     }
@@ -122,7 +122,7 @@ public class CartServiceTest {
 
     @Test
     public void 장바구니_상품_조회_예외() {
-        when(cartRepository.findCartByUser_Email(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
+        when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
         assertThatThrownBy(() -> cartService.removeCartItem(user.getEmail(), 1l))
                 .isInstanceOf(CartItemNotFoundException.class)
                 .hasMessage(CartItemNotFoundException.ERROR_MESSAGE);
