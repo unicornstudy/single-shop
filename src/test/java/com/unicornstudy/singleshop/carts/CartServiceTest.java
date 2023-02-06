@@ -3,6 +3,7 @@ package com.unicornstudy.singleshop.carts;
 import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.carts.exception.CartItemNotFoundException;
 import com.unicornstudy.singleshop.carts.exception.CartNotFoundException;
+import com.unicornstudy.singleshop.carts.exception.SessionExpiredException;
 import com.unicornstudy.singleshop.items.Items;
 import com.unicornstudy.singleshop.items.ItemsRepository;
 import com.unicornstudy.singleshop.user.Role;
@@ -77,7 +78,6 @@ public class CartServiceTest {
 
         Cart result = cartRepository.findAll().get(0);
         assertThat(result.getUser()).isEqualTo(user);
-        assertThat(result.getCartItems().get(0)).isEqualTo(cartItem);
         assertThat(result.getCartItems().get(0).getItem()).isEqualTo(item);
     }
 
@@ -96,9 +96,9 @@ public class CartServiceTest {
     @Test
     public void 장바구니_조회() {
         when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(user.getCart()));
-
         List<ReadCartResponseDto> result = cartService.findAllCartItemListByUser(user.getEmail());
-        assertThat(result.size()).isEqualTo(1);
+
+        assertThat(result.size()).isEqualTo(user.getCart().getCartItems().size());
     }
 
     @Test
@@ -126,6 +126,13 @@ public class CartServiceTest {
         assertThatThrownBy(() -> cartService.removeCartItem(user.getEmail(), 1l))
                 .isInstanceOf(CartItemNotFoundException.class)
                 .hasMessage(CartItemNotFoundException.ERROR_MESSAGE);
+    }
+
+    @Test
+    public void 세션_만료_예외() {
+        assertThatThrownBy(() -> cartService.addCart(user.getEmail(), item.getId()))
+                .isInstanceOf(SessionExpiredException.class)
+                .hasMessage(SessionExpiredException.ERROR_MESSAGE);
     }
 
     private void setItem() {

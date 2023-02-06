@@ -37,7 +37,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
-    public void mappingCart(Cart cart) {
+    public void initializeCart(Cart cart) {
         this.cart = cart;
     }
 

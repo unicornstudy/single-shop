@@ -21,17 +21,17 @@ public class CartItem {
     @JoinColumn(name = "item_id")
     private Items item;
 
-    public void mappingCart(Cart cart) {
-        this.cart = cart;
-    }
-
     public static CartItem createCartItem(Items item) {
         CartItem cartItem = new CartItem();
-        cartItem.mappingItem(item);
+        cartItem.initializeItem(item);
         return cartItem;
     }
 
-    private void mappingItem(Items item) {
+    public void initializeCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    private void initializeItem(Items item) {
         this.item = item;
     }
 
