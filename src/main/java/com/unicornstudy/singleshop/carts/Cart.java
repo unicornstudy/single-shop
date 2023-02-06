@@ -27,13 +27,9 @@ public class Cart {
 
     private int count;
 
-    public void mappingUser(User user) {
-        this.user = user;
-    }
-
     public Cart addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
-        cartItem.mappingCart(this);
+        cartItem.initializeCart(this);
         count++;
         price += cartItem.getItem().getPrice();
         return this;
@@ -47,16 +43,19 @@ public class Cart {
 
     public static Cart createCart(User user, CartItem cartItem) {
         Cart cart = new Cart();
-        cart.initializeCart(cartItem);
-        user.mappingCart(cart);
-        cart.mappingUser(user);
+        cart.initializeCartItems(cartItem);
+        user.initializeCart(cart);
+        cart.initializeUser(user);
         return cart;
     }
 
-    private void initializeCart(CartItem cartItem) {
-        cartItem.mappingCart(this);
+    public void initializeUser(User user) {
+        this.user = user;
+    }
+
+    private void initializeCartItems(CartItem cartItem) {
+        cartItem.initializeCart(this);
         this.price = cartItem.getItem().getPrice();
         this.count = 1;
     }
 }
-
