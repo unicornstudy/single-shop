@@ -14,4 +14,8 @@ public class ItemsSaveResponseDto extends ItemsResponseDto {
         super(items);
         this.createdDate = items.getCreatedDate();
     }
+
+    public static ItemsSaveResponseDto from(Items items) {
+        return new ItemsSaveResponseDto(items);
+    }
 }
