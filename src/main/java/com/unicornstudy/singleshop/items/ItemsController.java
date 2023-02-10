@@ -2,6 +2,7 @@ package com.unicornstudy.singleshop.items;
 
 import com.unicornstudy.singleshop.items.dto.ItemsReadUpdateResponseDto;
 import com.unicornstudy.singleshop.items.dto.ItemsRequestDto;
+import com.unicornstudy.singleshop.items.dto.ItemsSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class ItemsController {
     }
 
     @PostMapping("/api/items")
-    public ItemsReadUpdateResponseDto save(@RequestBody ItemsRequestDto requestDto) {
+    public ItemsSaveResponseDto save(@RequestBody ItemsRequestDto requestDto) {
         return itemService.save(requestDto);
     }
 
@@ -35,8 +36,6 @@ public class ItemsController {
 
     @DeleteMapping("/api/items/{id}")
     public Long delete(@PathVariable Long id) {
-        itemService.delete(id);
-
-        return id;
+        return itemService.delete(id);
     }
 }
