@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.items.exception;
+package com.unicornstudy.singleshop.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

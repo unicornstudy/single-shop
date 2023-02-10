@@ -1,5 +1,6 @@
-package com.unicornstudy.singleshop.items.exception;
+package com.unicornstudy.singleshop.exception;
 
+import com.unicornstudy.singleshop.exception.ErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
