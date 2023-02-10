@@ -14,4 +14,8 @@ public class ItemsReadUpdateResponseDto extends ItemsResponseDto {
         super(items);
         this.modifiedDate = items.getModifiedDate();
     }
+
+    public static ItemsReadUpdateResponseDto from(Items items) {
+        return new ItemsReadUpdateResponseDto(items);
+    }
 }
