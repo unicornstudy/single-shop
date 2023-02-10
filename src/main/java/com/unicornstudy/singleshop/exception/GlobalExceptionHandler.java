@@ -1,7 +1,6 @@
 package com.unicornstudy.singleshop.exception;
 
 import com.unicornstudy.singleshop.carts.exception.NotFoundException;
-import com.unicornstudy.singleshop.items.exception.ErrorResponse;
 import com.unicornstudy.singleshop.items.exception.ItemsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

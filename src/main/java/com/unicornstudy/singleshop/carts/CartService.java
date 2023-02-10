@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.unicornstudy.singleshop.items.exception.ErrorCode.BAD_REQUEST_ITEMS_READ;
+import static com.unicornstudy.singleshop.exception.ErrorCode.BAD_REQUEST_ITEMS_READ;
 
 @Service
 @RequiredArgsConstructor
