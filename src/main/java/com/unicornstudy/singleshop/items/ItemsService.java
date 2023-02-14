@@ -57,4 +57,16 @@ public class ItemsService {
 
         return id;
     }
+
+    @Transactional
+    public void subtractQuantity(Long id) {
+        Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
+        item.subtractQuantity();
+    }
+
+    @Transactional
+    public void addQuantity(Long id) {
+        Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
+        item.addQuantity();
+    }
 }

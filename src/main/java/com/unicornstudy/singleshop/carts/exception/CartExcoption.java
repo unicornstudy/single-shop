@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.carts.exception;
 
-public class NotFoundException extends RuntimeException {
+public class CartExcoption extends RuntimeException {
 
     @Override
     public synchronized Throwable fillInStackTrace() {

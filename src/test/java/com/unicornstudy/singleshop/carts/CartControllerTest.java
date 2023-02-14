@@ -1,7 +1,5 @@
 package com.unicornstudy.singleshop.carts;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unicornstudy.singleshop.carts.dto.CartRequestDto;
 import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.items.Items;
 import com.unicornstudy.singleshop.items.ItemsRepository;
@@ -64,7 +62,6 @@ public class CartControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     private MockHttpSession session = new MockHttpSession();
 
     private User user;
@@ -122,15 +119,13 @@ public class CartControllerTest {
     }
     @Test
     public void 장바구니_추가_테스트() throws Exception {
-        CartRequestDto requestDto = new CartRequestDto(1L);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
         when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
         mvc
-                .perform(post("/api/carts").session(session)
+                .perform(post("/api/carts/" + item.getId()).session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
-                        .content(objectMapper.writeValueAsString(requestDto))
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andDo(print());

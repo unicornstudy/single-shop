@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Items extends BaseTimeEntity {
 
+    @Version
+    private Long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
@@ -35,5 +38,13 @@ public class Items extends BaseTimeEntity {
         this.description = description;
         this.quantity = quantity;
         this.modifiedDate = modifiedDate;
+    }
+
+    public void addQuantity() {
+        this.quantity += 1;
+    }
+
+    public void subtractQuantity() {
+        this.quantity -= 1;
     }
 }

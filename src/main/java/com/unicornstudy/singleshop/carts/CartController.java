@@ -1,6 +1,5 @@
 package com.unicornstudy.singleshop.carts;
 
-import com.unicornstudy.singleshop.carts.dto.CartRequestDto;
 import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
@@ -23,9 +22,9 @@ public class CartController {
         return cartService.findCartItemListByUser(user.getEmail(), pageable);
     }
 
-    @PostMapping
-    public void addCart(@LoginUser SessionUser user, @RequestBody CartRequestDto requestDto) {
-        cartService.addCart(user.getEmail(), requestDto.getId());
+    @PostMapping("/{id}")
+    public void addCart(@LoginUser SessionUser user, @PathVariable Long id) {
+        cartService.addCart(user.getEmail(), id);
     }
 
     @DeleteMapping("/{id}")
