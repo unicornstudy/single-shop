@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.exception;
 
-import com.unicornstudy.singleshop.carts.exception.CartExcoption;
+import com.unicornstudy.singleshop.carts.exception.CartException;
 import com.unicornstudy.singleshop.items.exception.ItemsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
-    @ExceptionHandler(CartExcoption.class)
-    public ResponseEntity<String> handle(CartExcoption e) {
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<String> handle(CartException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

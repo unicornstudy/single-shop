@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.carts.exception;
 
-public class CartExcoption extends RuntimeException {
+public class CartException extends RuntimeException {
 
     @Override
     public synchronized Throwable fillInStackTrace() {
