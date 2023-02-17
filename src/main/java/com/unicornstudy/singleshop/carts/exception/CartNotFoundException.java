@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.carts.exception;
 
-public class CartNotFoundException extends CartExcoption {
+public class CartNotFoundException extends CartException {
 
     public static final String ERROR_MESSAGE = "해당 회원의 장바구니 정보가 없습니다.";
 

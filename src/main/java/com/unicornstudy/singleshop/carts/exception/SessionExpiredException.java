@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.carts.exception;
 
-public class SessionExpiredException extends CartExcoption {
+public class SessionExpiredException extends CartException {
 
     public static final String ERROR_MESSAGE = "세션이 비어있습니다.";
 
