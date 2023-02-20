@@ -1,5 +1,6 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.items.exception.ItemsException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,8 +57,8 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.subtractQuantity(id);
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException();
+                } catch (ItemsException | InterruptedException ie) {
+                    System.out.println("예외발생");
                 } finally {
                     latch.countDown();
                 }
@@ -77,8 +78,8 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.addQuantity(id);
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException();
+                } catch (ItemsException | InterruptedException ie) {
+                    System.out.println("예외발생");
                 } finally {
                     latch.countDown();
                 }
