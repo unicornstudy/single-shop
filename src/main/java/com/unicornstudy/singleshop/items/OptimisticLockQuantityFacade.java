@@ -1,5 +1,7 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.exception.ErrorCode;
+import com.unicornstudy.singleshop.items.exception.ItemsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -11,24 +13,18 @@ public class OptimisticLockQuantityFacade {
     private final ItemsService itemsService;
 
     public void subtractQuantity(Long id) throws InterruptedException {
-        while (true) {
-            try {
-                itemsService.subtractQuantity(id);
-                break;
-            } catch (OptimisticLockingFailureException e) {
-                Thread.sleep(50);
-            }
+        try {
+            itemsService.subtractQuantity(id);
+        } catch (OptimisticLockingFailureException e) {
+            throw new ItemsException(ErrorCode.ITEMS_LOCK_EXCEPTION);
         }
     }
 
     public void addQuantity(Long id) throws InterruptedException {
-        while (true) {
-            try {
-                itemsService.addQuantity(id);
-                break;
-            } catch (OptimisticLockingFailureException e) {
-                Thread.sleep(50);
-            }
+        try {
+            itemsService.addQuantity(id);
+        } catch (OptimisticLockingFailureException e) {
+            throw new ItemsException(ErrorCode.ITEMS_LOCK_EXCEPTION);
         }
     }
 }
