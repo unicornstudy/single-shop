@@ -2,6 +2,7 @@ package com.unicornstudy.singleshop.exception;
 
 import com.unicornstudy.singleshop.carts.exception.CartException;
 import com.unicornstudy.singleshop.items.exception.ItemsException;
+import com.unicornstudy.singleshop.orders.exception.OrderException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CartException.class)
-    public ResponseEntity<String> handle(CartException e) {
+    public ResponseEntity<String> handleCartException(CartException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<String> handleOrderException(OrderException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
