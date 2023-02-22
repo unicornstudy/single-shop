@@ -1,5 +1,6 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.orders.exception.OrderExceptionCheckFactory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +46,7 @@ public class Items extends BaseTimeEntity {
     }
 
     public void subtractQuantity() {
+        OrderExceptionCheckFactory.checkQuantity(this);
         this.quantity -= 1;
     }
 }

@@ -1,6 +1,8 @@
 package com.unicornstudy.singleshop.user;
 
 import com.unicornstudy.singleshop.carts.Cart;
+import com.unicornstudy.singleshop.delivery.Address;
+import com.unicornstudy.singleshop.orders.Orders;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +39,12 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders = new ArrayList<>();
+
+    @Embedded
+    private Address address;
+
     public void initializeCart(Cart cart) {
         this.cart = cart;
     }
@@ -50,6 +58,14 @@ public class User {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void updateAddress(Address address) {
+        this.address = address;
+    }
+
+    public void resetCart() {
+        this.cart = null;
     }
 
 }
