@@ -9,14 +9,20 @@ import com.unicornstudy.singleshop.user.User;
 import com.unicornstudy.singleshop.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +36,15 @@ import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,9 +52,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
 @WebMvcTest(CartController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @WithMockUser(roles = "USER")
+@ExtendWith(RestDocumentationExtension.class)
 public class CartControllerTest {
 
     private MockMvc mvc;
@@ -77,8 +94,8 @@ public class CartControllerTest {
     private Cart cart;
 
     @BeforeEach
-    public void setUp() {
-        setMvc();
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
+        setMvc(restDocumentation);
         setUser();
         setItem();
         setCart();
@@ -94,10 +111,17 @@ public class CartControllerTest {
         when(cartService.findCartItemListByUser(any(String.class), any(Pageable.class))).thenReturn(responseDtoList);
 
         mvc
-                .perform(get("/api/carts").session(session))
+                .perform(RestDocumentationRequestBuilders.get("/api/carts").session(session))
                 .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.*", hasSize(1)));
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andDo(document("장바구니_조회기능",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].cartItemId").description("상품 id"),
+                                fieldWithPath("[].itemName").description("상품 이름"),
+                                fieldWithPath("[].price").description("상품 가격"),
+                                fieldWithPath("[].description").description("상품 설명")
+                        )));
     }
 
     @Test
@@ -122,13 +146,18 @@ public class CartControllerTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         when(itemsRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(item));
         when(cartRepository.findCartByUserEmail(any(String.class))).thenReturn(Optional.ofNullable(cart));
+
         mvc
-                .perform(post("/api/carts/" + item.getId()).session(session)
+                .perform(RestDocumentationRequestBuilders.post("/api/carts/" + item.getId()).session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(document("장바구니_추가기능",
+                        preprocessRequest(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("itemId")
+                        )));
     }
 
     @Test
@@ -137,18 +166,19 @@ public class CartControllerTest {
         when(cartItemRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(cartItem));
 
         mvc
-                .perform(delete("/api/carts/" + cartItem.getId()).session(session)
+                .perform(RestDocumentationRequestBuilders.delete("/api/carts/" + cartItem.getId()).session(session)
                         .with(csrf())
                         .characterEncoding("utf-8")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(document("장바구니_삭제기능"));
     }
 
-    private void setMvc() {
+    private void setMvc(RestDocumentationContextProvider restDocumentation) {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentation))
                 .build();
     }
 
