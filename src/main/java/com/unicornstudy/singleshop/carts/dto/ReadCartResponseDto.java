@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ReadCartResponseDto {
+
     private Long cartItemId;
     private String itemName;
     private Integer price;

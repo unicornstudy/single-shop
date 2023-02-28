@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class OrderDetailDto {
+
     private String name;
     private String description;
     private Integer price;

@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")

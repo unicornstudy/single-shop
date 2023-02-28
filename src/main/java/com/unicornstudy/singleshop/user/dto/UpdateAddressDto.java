@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class UpdateAddressDto {
+
     private String city;
     private String street;
     private String zipcode;
