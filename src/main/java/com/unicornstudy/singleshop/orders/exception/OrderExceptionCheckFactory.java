@@ -9,6 +9,7 @@ import com.unicornstudy.singleshop.user.User;
 import java.util.Optional;
 
 public class OrderExceptionCheckFactory {
+
     public static void checkAddress(User user) {
         Optional.ofNullable(user.getAddress()).orElseThrow(() -> new EmptyAddressException());
     }

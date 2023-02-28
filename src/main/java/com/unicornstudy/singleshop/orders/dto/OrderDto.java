@@ -35,11 +35,4 @@ public class OrderDto {
         this.orderPrice = order.getOrderPrice();
         this.payment = order.getPayment();
     }
-
-    private List<ItemsReadUpdateResponseDto> entityToDto(Orders order) {
-        return order.getOrderItems()
-                .stream()
-                .map(entity -> new ItemsReadUpdateResponseDto(entity.getItem()))
-                .collect(Collectors.toList());
-    }
 }
