@@ -19,8 +19,6 @@ public class OrderDto {
 
     private OrderStatus status;
 
-    private Integer orderPrice;
-
     private Payment payment;
 
     public static OrderDto createOrderDto(Orders order) {
@@ -32,7 +30,6 @@ public class OrderDto {
     private void initialize(Orders order) {
         this.orderDate = order.getOrderDate();
         this.status = order.getStatus();
-        this.orderPrice = order.getOrderPrice();
         this.payment = order.getPayment();
     }
 }

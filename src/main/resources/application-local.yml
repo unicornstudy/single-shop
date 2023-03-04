@@ -1,0 +1,9 @@
+cid: "${kakaoPayTestCid}"
+subscription-cid: "${kakaoPayTestSubscriptionCid}"
+approve-url: http://localhost:8080/api/payments/kakaopay/approve
+cancel-url: http://localhost:8080/api/payments/kakaopay/cancel
+fail-url: http://localhost:8080/api/payments/kakaopay/fail
+domain: http://localhost:8080
+subscription-approve-url: http://localhost:8080/api/subscription/kakaopay/approve
+subscription-cancel-url: http://localhost:8080/api/subscription/kakaopay/cancel
+subscription-fail-url: http://localhost:8080/api/subscription/kakaopay/fail

@@ -4,6 +4,7 @@ import com.unicornstudy.singleshop.carts.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.carts.exception.CartItemNotFoundException;
 import com.unicornstudy.singleshop.carts.exception.CartNotFoundException;
 import com.unicornstudy.singleshop.carts.exception.SessionExpiredException;
+import com.unicornstudy.singleshop.config.TestSetting;
 import com.unicornstudy.singleshop.items.Items;
 import com.unicornstudy.singleshop.items.ItemsRepository;
 import com.unicornstudy.singleshop.user.Role;
@@ -45,13 +46,6 @@ public class CartServiceTest {
     @Mock
     private ItemsRepository itemsRepository;
 
-    private final String name = "test";
-    private final String email = "testEmail";
-    private final String picture = "testPicture";
-    private final Integer price = 10;
-    private final String description = "description";
-    private final Integer quantity = 10;
-
     private User user;
     private Items item;
     private CartService cartService;
@@ -61,9 +55,11 @@ public class CartServiceTest {
 
     @BeforeEach
     public void setUp() {
-        setItem();
-        setUser();
-        setCart();
+        item = TestSetting.setItem();
+        user = TestSetting.setUser(TestSetting.setAddress());
+        cartItem = TestSetting.setCartItem(item);
+        cart = TestSetting.setCart(user, cartItem);
+        cartList.add(cart);
         cartService = new CartService(cartRepository, cartItemRepository, userRepository, itemsRepository);
     }
 
@@ -133,31 +129,5 @@ public class CartServiceTest {
         assertThatThrownBy(() -> cartService.addCart(user.getEmail(), item.getId()))
                 .isInstanceOf(SessionExpiredException.class)
                 .hasMessage(SessionExpiredException.ERROR_MESSAGE);
-    }
-
-    private void setItem() {
-        item = Items.builder()
-                .id(1L)
-                .name(name)
-                .price(price)
-                .description(description)
-                .quantity(quantity)
-                .build();
-    }
-
-    private void setUser() {
-        user = User.builder()
-                .id(1L)
-                .name(name)
-                .email(email)
-                .picture(picture)
-                .role(Role.USER)
-                .build();
-    }
-
-    private void setCart() {
-        cartItem = CartItem.createCartItem(item);
-        cart = Cart.createCart(user, cartItem);
-        cartList.add(cart);
     }
 }

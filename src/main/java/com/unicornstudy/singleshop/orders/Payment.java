@@ -16,4 +16,5 @@ public class Payment {
     private String tid;
     private String paymentKind;
     private String sid;
+    private String price;
 }

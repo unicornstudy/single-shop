@@ -79,6 +79,14 @@ public class OrderService {
     }
 
     @Transactional
+    public void handleOrderPaymentError(Long id) throws InterruptedException {
+        Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
+        OrderExceptionCheckFactory.checkOrderStatus(order);
+        order.cancelDelivery();
+        changeOrderStatusAndQuantity(order);
+    }
+
+    @Transactional
     public OrderDto cancel(Long id) throws InterruptedException {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
         OrderExceptionCheckFactory.checkOrderStatus(order);

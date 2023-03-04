@@ -3,7 +3,6 @@ package com.unicornstudy.singleshop.carts;
 import com.unicornstudy.singleshop.items.Items;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter

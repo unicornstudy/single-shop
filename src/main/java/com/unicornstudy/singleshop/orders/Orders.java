@@ -1,7 +1,6 @@
 package com.unicornstudy.singleshop.orders;
 
 import com.unicornstudy.singleshop.delivery.Delivery;
-import com.unicornstudy.singleshop.items.Items;
 import com.unicornstudy.singleshop.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,8 +34,6 @@ public class Orders {
 
     private LocalDateTime orderDate;
 
-    private Integer orderPrice;
-
     @Embedded
     private Payment payment;
 
@@ -58,7 +55,7 @@ public class Orders {
         order.changeOrderStatus(OrderStatus.ORDER);
         order.addOrderDate();
         order.addPayment(payment);
-        order.addOrderPrice();
+
         return order;
     }
 
@@ -72,13 +69,6 @@ public class Orders {
 
     private void addOrderDate() {
         this.orderDate = LocalDateTime.now();
-    }
-
-    private void addOrderPrice() {
-        this.orderPrice = orderItems.stream()
-                .map(entity -> entity.getItem())
-                .mapToInt(Items::getPrice)
-                .sum();
     }
 
     public void initializeDelivery(Delivery delivery) {
