@@ -5,6 +5,7 @@ import com.unicornstudy.singleshop.items.exception.ItemsException;
 import com.unicornstudy.singleshop.orders.OrderService;
 import com.unicornstudy.singleshop.orders.exception.OrderException;
 import com.unicornstudy.singleshop.payments.exception.ApproveException;
+import com.unicornstudy.singleshop.payments.exception.PaymentsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OrderException.class)
     public ResponseEntity<String> handleOrderException(OrderException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(PaymentsException.class)
+    public ResponseEntity<String> handlePaymentException(PaymentsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
