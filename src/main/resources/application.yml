@@ -1,13 +1,15 @@
 spring:
   profiles:
+    active: local
     include: oauth
   jpa:
     open-in-view: false
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: create
+      ddl-auto: update
   datasource:
     username: test
     password: 1234
     url: jdbc:mysql://localhost:3307/unicorn?serverTimezone=UTC&characterEncoding=UTF-8
+admin-key: "${kakaoAdminKey}"
