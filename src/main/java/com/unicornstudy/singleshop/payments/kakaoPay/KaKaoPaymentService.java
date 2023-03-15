@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class KaKaoPaymentService implements PaymentService {
 
     private static final String BASE_URL = "https://kapi.kakao.com/v1/payment";
-    private static final String PATH = "/kakaopay";
+    private static final String PATH = "/api/payments/kakaopay";
 
     @Value("${admin-key}")
     private String admin_key;
@@ -57,9 +57,9 @@ public class KaKaoPaymentService implements PaymentService {
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError()
                                 || status.is5xxServerError()
-                        , clientResponse -> {
-                            throw new ApproveException(orderId);
-                        })
+                        , clientResponse ->
+                                clientResponse.bodyToMono(String.class)
+                                        .map(body -> new ApproveException(orderId, body)))
                 .bodyToMono(KaKaoApproveResponseDto.class);
     }
 

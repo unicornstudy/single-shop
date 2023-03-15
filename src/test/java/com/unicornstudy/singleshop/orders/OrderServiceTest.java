@@ -3,6 +3,7 @@ package com.unicornstudy.singleshop.orders;
 import com.unicornstudy.singleshop.carts.Cart;
 import com.unicornstudy.singleshop.carts.CartItem;
 import com.unicornstudy.singleshop.carts.CartRepository;
+import com.unicornstudy.singleshop.carts.CartService;
 import com.unicornstudy.singleshop.config.TestSetting;
 import com.unicornstudy.singleshop.delivery.Address;
 import com.unicornstudy.singleshop.delivery.Delivery;
@@ -52,6 +53,9 @@ public class OrderServiceTest {
     @Mock
     private CartRepository cartRepository;
 
+    @Mock
+    private CartService cartService;
+
     private OrderService orderService;
 
     private User user;
@@ -80,7 +84,7 @@ public class OrderServiceTest {
         orders = TestSetting.setOrders(order);
         cartItem = TestSetting.setCartItem(item);
         cart = TestSetting.setCart(user, cartItem);
-        orderService = new OrderService(userRepository, orderRepository, cartRepository, orderItemRepository, optimisticLockQuantityFacade);
+        orderService = new OrderService(userRepository, orderRepository, cartRepository, orderItemRepository, cartService, optimisticLockQuantityFacade);
     }
 
     @Test
@@ -97,7 +101,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void 주문() throws InterruptedException {
+    public void 주문() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
         when(cartRepository.findCartByUserEmail(user.getEmail())).thenReturn(Optional.ofNullable(cart));
         when(orderRepository.save(any(Orders.class))).thenReturn(order);
@@ -107,14 +111,22 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void 주문_취소() throws InterruptedException {
+    public void 주문_취소() {
         when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
         OrderDto orderDto = orderService.cancel(order.getId());
         assertThat(orderDto.getPayment().getTid()).isEqualTo(payment.getTid());
     }
 
     @Test
-    public void 배송지_예외() throws InterruptedException {
+    public void 재주문() {
+        when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
+
+        orderService.reOrder(user.getEmail(), order.getId());
+        assertThat(user.getCart().getCartItems().size()).isEqualTo(order.getOrderItems().size());
+    }
+
+    @Test
+    public void 배송지_예외() {
         user.updateAddress(null);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         assertThatThrownBy(() -> orderService.order(user.getEmail(), payment))
@@ -148,6 +160,7 @@ public class OrderServiceTest {
                 .isInstanceOf(OrderStatusException.class)
                 .hasMessage(OrderStatusException.ERROR_MESSAGE);
     }
+
     @Test
     public void 주문_조회_예외() {
         assertThatThrownBy(() -> orderService.cancel(order.getId()))

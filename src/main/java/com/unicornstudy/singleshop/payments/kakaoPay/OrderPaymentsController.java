@@ -20,13 +20,11 @@ import java.net.URISyntaxException;
 public class OrderPaymentsController {
 
     private final OrderService orderService;
-    private static final String REQUEST_PATH = "/api/payments";
-
 
     @GetMapping("{paymentApi}")
     public ResponseEntity selectPayment(@PathVariable("paymentApi") String paymentApi, @Value("${domain}") String domain)
             throws URISyntaxException {
-        String payUrl = domain + REQUEST_PATH + PaymentServiceFactory.getService(paymentApi).getPaymentPath();
+        String payUrl = domain + PaymentServiceFactory.getService(paymentApi).getPaymentPath();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI(payUrl));
 
@@ -40,7 +38,7 @@ public class OrderPaymentsController {
     public ResponseEntity selectCancel(@PathVariable("id") Long id, @Value("${domain}") String domain)
             throws URISyntaxException {
         String paymentKind = orderService.findOrderById(id).getPayment().getPaymentKind();
-        String cancelUrl = domain + REQUEST_PATH + PaymentServiceFactory.getService(paymentKind).getPaymentPath() + "/" + id;
+        String cancelUrl = domain + PaymentServiceFactory.getService(paymentKind).getPaymentPath() + "/" + id;
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI(cancelUrl));
 

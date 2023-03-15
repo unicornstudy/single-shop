@@ -1,7 +1,9 @@
 package com.unicornstudy.singleshop.orders;
 
 import com.unicornstudy.singleshop.carts.Cart;
+import com.unicornstudy.singleshop.carts.CartItem;
 import com.unicornstudy.singleshop.carts.CartRepository;
+import com.unicornstudy.singleshop.carts.CartService;
 import com.unicornstudy.singleshop.carts.exception.CartNotFoundException;
 import com.unicornstudy.singleshop.carts.exception.SessionExpiredException;
 import com.unicornstudy.singleshop.delivery.Delivery;
@@ -32,6 +34,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
     private final OrderItemRepository orderItemRepository;
+    private final CartService cartService;
     private final OptimisticLockQuantityFacade optimisticLockQuantityFacade;
 
     @Transactional(readOnly = true)
@@ -58,7 +61,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long order(String userEmail, Payment payment) throws InterruptedException {
+    public Long order(String userEmail, Payment payment) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new SessionExpiredException());
         OrderExceptionCheckFactory.checkAddress(user);
         Cart cart = cartRepository.findCartByUserEmail(userEmail).orElseThrow(() -> new CartNotFoundException());
@@ -69,7 +72,7 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
-    private List<OrderItem> convertCartItemToOrderItem(List<Items> items) throws InterruptedException {
+    private List<OrderItem> convertCartItemToOrderItem(List<Items> items) {
         List<OrderItem> orderItems = new ArrayList<>();
         for (Items item : items) {
             optimisticLockQuantityFacade.subtractQuantity(item.getId());
@@ -79,7 +82,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void handleOrderPaymentError(Long id) throws InterruptedException {
+    public void handleOrderPaymentError(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
         OrderExceptionCheckFactory.checkOrderStatus(order);
         order.cancelDelivery();
@@ -87,7 +90,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto cancel(Long id) throws InterruptedException {
+    public OrderDto cancel(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
         OrderExceptionCheckFactory.checkOrderStatus(order);
         OrderExceptionCheckFactory.checkDelivery(order);
@@ -97,11 +100,18 @@ public class OrderService {
         return OrderDto.createOrderDto(order);
     }
 
-    private void changeOrderStatusAndQuantity(Orders order) throws InterruptedException {
+    private void changeOrderStatusAndQuantity(Orders order) {
         order.changeOrderStatus(OrderStatus.CANCEL);
         for (OrderItem orderItem: order.getOrderItems()) {
             optimisticLockQuantityFacade.addQuantity(orderItem.getItem().getId());
         }
+    }
 
+    @Transactional
+    public void reOrder(String userEmail, Long id) {
+        Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
+        order.getOrderItems().stream()
+                .map(orderItem -> orderItem.getItem())
+                .forEach(item -> cartService.addCart(userEmail, item.getId()));
     }
 }
