@@ -21,7 +21,7 @@ public class OrderPaymentsController {
 
     private final OrderService orderService;
 
-    @GetMapping("{paymentApi}")
+    @GetMapping("/{paymentApi}")
     public ResponseEntity selectPayment(@PathVariable("paymentApi") String paymentApi, @Value("${domain}") String domain)
             throws URISyntaxException {
         String payUrl = domain + PaymentServiceFactory.getService(paymentApi).getPaymentPath();
@@ -34,7 +34,7 @@ public class OrderPaymentsController {
                 .build();
     }
 
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public ResponseEntity selectCancel(@PathVariable("id") Long id, @Value("${domain}") String domain)
             throws URISyntaxException {
         String paymentKind = orderService.findOrderById(id).getPayment().getPaymentKind();

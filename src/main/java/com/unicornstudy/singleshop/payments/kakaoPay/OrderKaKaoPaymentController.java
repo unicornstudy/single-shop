@@ -63,7 +63,7 @@ public class OrderKaKaoPaymentController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<KaKaoCancelResponseDto> requestCancel(@PathVariable("id") Long id) {
         KaKaoCancelRequestDto cancelRequestDto = KaKaoCancelRequestDto.createKaKaoCancelRequestDtoForOrder(orderService.cancel(id), kaKaoConfiguration.getCid());
         KaKaoCancelResponseDto responseDto = paymentsService.requestKaKaoToCancel(cancelRequestDto).block();
