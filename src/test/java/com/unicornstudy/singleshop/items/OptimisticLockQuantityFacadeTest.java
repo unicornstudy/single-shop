@@ -30,6 +30,7 @@ public class OptimisticLockQuantityFacadeTest {
     private CountDownLatch latch;
     private AtomicInteger successCount;
     private Long id = 1L;
+
     @BeforeEach
     public void setUp() {
         item = Items.builder()
@@ -57,7 +58,7 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.subtractQuantity(id);
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (ItemsException | InterruptedException ie) {
+                } catch (ItemsException ie) {
                     System.out.println("예외발생");
                 } finally {
                     latch.countDown();
@@ -65,7 +66,7 @@ public class OptimisticLockQuantityFacadeTest {
             });
         }
         latch.await();
-        int result = itemsRepository.findById(id).get().getQuantity();
+        int result = itemsRepository.findById(item.getId()).get().getQuantity();
         assertThat(result).isEqualTo(item.getQuantity() - successCount.get());
         System.out.println("성공횟수: " + successCount.get());
     }
@@ -78,7 +79,7 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.addQuantity(id);
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (ItemsException | InterruptedException ie) {
+                } catch (ItemsException ie) {
                     System.out.println("예외발생");
                 } finally {
                     latch.countDown();
@@ -86,7 +87,7 @@ public class OptimisticLockQuantityFacadeTest {
             });
         }
         latch.await();
-        int result = itemsRepository.findById(id).get().getQuantity();
+        int result = itemsRepository.findById(item.getId()).get().getQuantity();
         assertThat(result).isEqualTo(item.getQuantity() + successCount.get());
         System.out.println("성공횟수: " + successCount.get());
     }

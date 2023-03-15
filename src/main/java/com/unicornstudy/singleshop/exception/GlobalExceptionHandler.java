@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ApproveException.class)
-    public ResponseEntity<String> handleApproveException(ApproveException e) throws InterruptedException {
+    public ResponseEntity<String> handleApproveException(ApproveException e) {
         orderService.handleOrderPaymentError(e.getOrderId());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }

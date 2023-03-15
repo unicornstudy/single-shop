@@ -12,7 +12,7 @@ public class OptimisticLockQuantityFacade {
 
     private final ItemsService itemsService;
 
-    public void subtractQuantity(Long id) throws InterruptedException {
+    public void subtractQuantity(Long id) {
         try {
             itemsService.subtractQuantity(id);
         } catch (OptimisticLockingFailureException e) {
@@ -20,7 +20,7 @@ public class OptimisticLockQuantityFacade {
         }
     }
 
-    public void addQuantity(Long id) throws InterruptedException {
+    public void addQuantity(Long id) {
         try {
             itemsService.addQuantity(id);
         } catch (OptimisticLockingFailureException e) {

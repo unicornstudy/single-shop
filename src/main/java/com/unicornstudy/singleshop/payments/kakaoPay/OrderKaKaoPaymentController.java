@@ -51,7 +51,7 @@ public class OrderKaKaoPaymentController {
 
     @GetMapping("/approve")
     public ResponseEntity<KaKaoApproveResponseDto> requestApprove(@LoginUser SessionUser user, HttpSession httpSession,
-                                                                  @RequestParam("pg_token") String pg_token) throws InterruptedException {
+                                                                  @RequestParam("pg_token") String pg_token) {
         String tid = (String) httpSession.getAttribute("tid");
         KaKaoReadyRequestDto readyRequestDto = (KaKaoReadyRequestDto) httpSession.getAttribute("readyRequestDto");
         KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.createApproveRequestDto(tid, pg_token, readyRequestDto);
@@ -64,7 +64,7 @@ public class OrderKaKaoPaymentController {
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<KaKaoCancelResponseDto> requestCancel(@PathVariable("id") Long id) throws InterruptedException {
+    public ResponseEntity<KaKaoCancelResponseDto> requestCancel(@PathVariable("id") Long id) {
         KaKaoCancelRequestDto cancelRequestDto = KaKaoCancelRequestDto.createKaKaoCancelRequestDtoForOrder(orderService.cancel(id), kaKaoConfiguration.getCid());
         KaKaoCancelResponseDto responseDto = paymentsService.requestKaKaoToCancel(cancelRequestDto).block();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
