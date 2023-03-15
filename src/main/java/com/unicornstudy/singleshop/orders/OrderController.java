@@ -26,12 +26,12 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOrdersByUser(user.getEmail(), pageable), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<OrderDetailDto>> readOrderDetails(@PathVariable Long id, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(orderService.findOrderDetailsById(id, pageable), HttpStatus.OK);
     }
 
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public ResponseEntity reOrder(@PathVariable Long id, @LoginUser SessionUser user) {
         orderService.reOrder(user.getEmail(), id);
         return new ResponseEntity<>(HttpStatus.OK);
