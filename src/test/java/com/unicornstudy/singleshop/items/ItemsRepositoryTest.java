@@ -1,5 +1,6 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.items.exception.ItemsException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.unicornstudy.singleshop.exception.ErrorCode.BAD_REQUEST_ITEMS_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -143,4 +145,11 @@ class ItemsRepositoryTest {
         assertThat(itemsRepository.findById(items.getId())).isNotPresent();
     }
 
+    @Test
+    void 상품_생성_날짜_테스트() {
+        Items foundItem = itemsRepository.findById(1L).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
+
+        assertThat(foundItem.getCreatedDate()).isNotNull();
+        assertThat(foundItem.getCreatedDate()).isBeforeOrEqualTo(LocalDateTime.now());
+    }
 }

@@ -74,5 +74,19 @@ public class ItemsServiceTest {
                 .isInstanceOf(ItemsException.class);
     }
 
+    @Test
+    void 상품_증가_예외() {
+        Long id = itemsRepository.findAll().get(0).getId() + 1L;
 
+        assertThatThrownBy(() -> itemsService.addQuantity(id))
+                .isInstanceOf(ItemsException.class);
+    }
+
+    @Test
+    void 상품_감소_예외() {
+        Long id = itemsRepository.findAll().get(0).getId() + 1L;
+
+        assertThatThrownBy(() -> itemsService.subtractQuantity(id))
+                .isInstanceOf(ItemsException.class);
+    }
 }

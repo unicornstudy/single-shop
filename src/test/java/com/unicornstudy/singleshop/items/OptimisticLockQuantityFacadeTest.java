@@ -29,7 +29,6 @@ public class OptimisticLockQuantityFacadeTest {
     private ExecutorService executorService;
     private CountDownLatch latch;
     private AtomicInteger successCount;
-    private Long id = 1L;
     @BeforeEach
     public void setUp() {
         item = Items.builder()
@@ -54,7 +53,7 @@ public class OptimisticLockQuantityFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.execute(() -> {
                 try {
-                    optimisticLockQuantityFacade.subtractQuantity(id);
+                    optimisticLockQuantityFacade.subtractQuantity(item.getId());
                     System.out.println("성공");
                     successCount.getAndIncrement();
                 } catch (ItemsException | InterruptedException ie) {
@@ -65,7 +64,7 @@ public class OptimisticLockQuantityFacadeTest {
             });
         }
         latch.await();
-        int result = itemsRepository.findById(id).get().getQuantity();
+        int result = itemsRepository.findById(item.getId()).get().getQuantity();
         assertThat(result).isEqualTo(item.getQuantity() - successCount.get());
         System.out.println("성공횟수: " + successCount.get());
     }
@@ -75,7 +74,7 @@ public class OptimisticLockQuantityFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.execute(() -> {
                 try {
-                    optimisticLockQuantityFacade.addQuantity(id);
+                    optimisticLockQuantityFacade.addQuantity(item.getId());
                     System.out.println("성공");
                     successCount.getAndIncrement();
                 } catch (ItemsException | InterruptedException ie) {
@@ -86,7 +85,7 @@ public class OptimisticLockQuantityFacadeTest {
             });
         }
         latch.await();
-        int result = itemsRepository.findById(id).get().getQuantity();
+        int result = itemsRepository.findById(item.getId()).get().getQuantity();
         assertThat(result).isEqualTo(item.getQuantity() + successCount.get());
         System.out.println("성공횟수: " + successCount.get());
     }
