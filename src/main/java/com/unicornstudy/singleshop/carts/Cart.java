@@ -56,6 +56,7 @@ public class Cart {
 
     private void initializeCartItems(CartItem cartItem) {
         cartItem.initializeCart(this);
+        this.cartItems.add(cartItem);
         this.price = cartItem.getItem().getPrice();
         this.count = 1;
     }
