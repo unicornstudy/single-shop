@@ -39,4 +39,4 @@ out/
 /src/main/resources/bootstrap.yml
 
 ### Jacoco ###
-build/jacoco
+jacoco/
