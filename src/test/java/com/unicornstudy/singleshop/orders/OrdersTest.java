@@ -61,6 +61,28 @@ class OrdersTest {
         assertThat(order.getOrderDate()).isBefore(LocalDateTime.now());
     }
 
+    @Test
+    void 주문상품_추가_테스트() {
+        order.addOrderItem(orderItem);
+        orderItem.initializeOrder(order);
+
+        assertThat(order.getOrderItems().size()).isEqualTo(2);
+    }
+
+    @Test
+    void 주문_상태_변경_테스트() {
+        order.changeOrderStatus(OrderStatus.CANCEL);
+
+        assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCEL);
+    }
+
+    @Test
+    void 배송_취소_테스트() {
+        order.cancelDelivery();
+
+        assertThat(order.getDelivery()).isNull();
+    }
+
     private void setItem() {
         item = Items.builder()
                 .id(1L)
