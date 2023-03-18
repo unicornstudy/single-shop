@@ -29,6 +29,7 @@ public class OptimisticLockQuantityFacadeTest {
     private ExecutorService executorService;
     private CountDownLatch latch;
     private AtomicInteger successCount;
+
     @BeforeEach
     public void setUp() {
         item = Items.builder()
@@ -56,7 +57,7 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.subtractQuantity(item.getId());
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (ItemsException | InterruptedException ie) {
+                } catch (ItemsException ie) {
                     System.out.println("예외발생");
                 } finally {
                     latch.countDown();
@@ -77,7 +78,7 @@ public class OptimisticLockQuantityFacadeTest {
                     optimisticLockQuantityFacade.addQuantity(item.getId());
                     System.out.println("성공");
                     successCount.getAndIncrement();
-                } catch (ItemsException | InterruptedException ie) {
+                } catch (ItemsException ie) {
                     System.out.println("예외발생");
                 } finally {
                     latch.countDown();

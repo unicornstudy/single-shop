@@ -10,11 +10,13 @@ public class ReadCartResponseDto {
     private String itemName;
     private Integer price;
     private String description;
+    private Integer quantity;
 
     public ReadCartResponseDto(CartItem cartItem) {
         cartItemId = cartItem.getId();
         itemName = cartItem.getItem().getName();
         price = cartItem.getItem().getPrice();
         description = cartItem.getItem().getDescription();
+        quantity = cartItem.getItem().getQuantity();
     }
 }

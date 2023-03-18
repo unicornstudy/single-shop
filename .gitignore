@@ -35,7 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/test/java/com/unicornstudy/singleshop/config/
 /src/main/resources/bootstrap.yml
 
 ### Jacoco ###

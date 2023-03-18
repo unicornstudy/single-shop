@@ -3,6 +3,8 @@ package com.unicornstudy.singleshop.orders;
 import com.unicornstudy.singleshop.carts.Cart;
 import com.unicornstudy.singleshop.carts.CartItem;
 import com.unicornstudy.singleshop.carts.CartRepository;
+import com.unicornstudy.singleshop.carts.CartService;
+import com.unicornstudy.singleshop.config.TestSetting;
 import com.unicornstudy.singleshop.delivery.Address;
 import com.unicornstudy.singleshop.delivery.Delivery;
 import com.unicornstudy.singleshop.delivery.DeliveryStatus;
@@ -51,21 +53,16 @@ public class OrderServiceTest {
     @Mock
     private CartRepository cartRepository;
 
-    private OrderService orderService;
+    @Mock
+    private CartService cartService;
 
-    private final String name = "test";
-    private final String email = "testEmail";
-    private final String picture = "testPicture";
-    private final Integer price = 10;
-    private final String description = "description";
-    private final Integer quantity = 1;
+    private OrderService orderService;
 
     private User user;
     private Items item;
     private Cart cart;
     private Orders order;
     private OrderItem orderItem;
-    private List<Cart> cartList = new ArrayList<>();
     private List<OrderItem> orderItems = new ArrayList<>();
     private List<Orders> orders = new ArrayList<>();
     private CartItem cartItem;
@@ -76,15 +73,18 @@ public class OrderServiceTest {
 
     @BeforeEach
     public void setUp() {
-        setPayment();
-        setItem();
-        setAddress();
-        setPageable();
-        setDelivery();
-        setUser();
-        setOrder();
-        setCart();
-        orderService = new OrderService(userRepository, orderRepository, cartRepository, orderItemRepository, optimisticLockQuantityFacade);
+        payment = TestSetting.setPayment();
+        item = TestSetting.setItem();
+        address = TestSetting.setAddress();
+        pageable = TestSetting.setPageable();
+        delivery = TestSetting.setDelivery(address);
+        user = TestSetting.setUser(address);
+        orderItem = TestSetting.setOrderItem(item);
+        order = TestSetting.setOrder(user, orderItem, payment, delivery);
+        orders = TestSetting.setOrders(order);
+        cartItem = TestSetting.setCartItem(item);
+        cart = TestSetting.setCart(user, cartItem);
+        orderService = new OrderService(userRepository, orderRepository, cartRepository, orderItemRepository, cartService, optimisticLockQuantityFacade);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void 주문() throws InterruptedException {
+    public void 주문() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
         when(cartRepository.findCartByUserEmail(user.getEmail())).thenReturn(Optional.ofNullable(cart));
         when(orderRepository.save(any(Orders.class))).thenReturn(order);
@@ -111,14 +111,22 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void 주문_취소() throws InterruptedException {
+    public void 주문_취소() {
         when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
         OrderDto orderDto = orderService.cancel(order.getId());
         assertThat(orderDto.getPayment().getTid()).isEqualTo(payment.getTid());
     }
 
     @Test
-    public void 배송지_예외() throws InterruptedException {
+    public void 재주문() {
+        when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
+
+        orderService.reOrder(user.getEmail(), order.getId());
+        assertThat(user.getCart().getCartItems().size()).isEqualTo(order.getOrderItems().size());
+    }
+
+    @Test
+    public void 배송지_예외() {
         user.updateAddress(null);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
         assertThatThrownBy(() -> orderService.order(user.getEmail(), payment))
@@ -152,62 +160,11 @@ public class OrderServiceTest {
                 .isInstanceOf(OrderStatusException.class)
                 .hasMessage(OrderStatusException.ERROR_MESSAGE);
     }
+
     @Test
     public void 주문_조회_예외() {
         assertThatThrownBy(() -> orderService.cancel(order.getId()))
                 .isInstanceOf(OrderNotFoundException.class)
                 .hasMessage(OrderNotFoundException.ERROR_MESSAGE);
-    }
-
-    private void setItem() {
-        item = Items.builder()
-                .id(1L)
-                .name(name)
-                .price(price)
-                .description(description)
-                .quantity(quantity)
-                .build();
-    }
-
-    private void setUser() {
-        user = User.builder()
-                .id(1L)
-                .name(name)
-                .email(email)
-                .picture(picture)
-                .role(Role.USER)
-                .address(address)
-                .orders(orders)
-                .cart(cart)
-                .build();
-    }
-
-    private void setCart() {
-        cartItem = CartItem.createCartItem(item);
-        cart = Cart.createCart(user, cartItem);
-        cartList.add(cart);
-    }
-
-    private void setPageable() {
-        pageable = PageRequest.of(0, 10, Sort.by("id").descending());
-    }
-
-    private void setAddress() {
-        address = new Address("testCity", "testStreet", "testZipcode");
-    }
-
-    private void setDelivery() {
-        delivery = Delivery.createDelivery(address);
-    }
-
-    private void setOrder() {
-        orderItem = OrderItem.createOrderItem(item);
-        orderItems.add(orderItem);
-        order = Orders.createOrder(user, orderItems, payment, delivery);
-        order.createIdForTest(1L);
-    }
-
-    private void setPayment() {
-        payment = Payment.builder().paymentKind("test").tid("test").build();
     }
 }

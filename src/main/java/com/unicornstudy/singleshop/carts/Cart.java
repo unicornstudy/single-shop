@@ -3,7 +3,6 @@ package com.unicornstudy.singleshop.carts;
 import com.unicornstudy.singleshop.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -44,7 +43,8 @@ public class Cart {
 
     public static Cart createCart(User user, CartItem cartItem) {
         Cart cart = new Cart();
-        cart.initializeCartItems(cartItem);
+        cart.initializeCartItems();
+        cart.addCartItem(cartItem);
         user.initializeCart(cart);
         cart.initializeUser(user);
         return cart;
@@ -54,10 +54,8 @@ public class Cart {
         this.user = user;
     }
 
-    private void initializeCartItems(CartItem cartItem) {
-        cartItem.initializeCart(this);
-        this.cartItems.add(cartItem);
-        this.price = cartItem.getItem().getPrice();
-        this.count = 1;
+    private void initializeCartItems() {
+        this.price = 0;
+        this.count = 0;
     }
 }

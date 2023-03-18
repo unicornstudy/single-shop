@@ -10,10 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,8 +26,14 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOrdersByUser(user.getEmail(), pageable), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<OrderDetailDto>> readOrderDetails(@PathVariable Long id, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(orderService.findOrderDetailsById(id, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity reOrder(@PathVariable Long id, @LoginUser SessionUser user) {
+        orderService.reOrder(user.getEmail(), id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
