@@ -1,9 +1,13 @@
 package com.unicornstudy.singleshop.user.dto;
 
 import com.unicornstudy.singleshop.delivery.Address;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateAddressDto {
 
     private String city;
