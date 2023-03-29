@@ -1,15 +1,15 @@
 package com.unicornstudy.singleshop.config;
 
-import com.unicornstudy.singleshop.carts.Cart;
-import com.unicornstudy.singleshop.carts.CartItem;
-import com.unicornstudy.singleshop.delivery.Address;
-import com.unicornstudy.singleshop.delivery.Delivery;
-import com.unicornstudy.singleshop.items.Items;
-import com.unicornstudy.singleshop.orders.OrderItem;
-import com.unicornstudy.singleshop.orders.Orders;
-import com.unicornstudy.singleshop.orders.Payment;
-import com.unicornstudy.singleshop.user.Role;
-import com.unicornstudy.singleshop.user.User;
+import com.unicornstudy.singleshop.carts.domain.Cart;
+import com.unicornstudy.singleshop.carts.domain.CartItem;
+import com.unicornstudy.singleshop.delivery.domain.Address;
+import com.unicornstudy.singleshop.delivery.domain.Delivery;
+import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.orders.domain.OrderItem;
+import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.payments.domain.Payment;
+import com.unicornstudy.singleshop.user.domain.Role;
+import com.unicornstudy.singleshop.user.domain.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

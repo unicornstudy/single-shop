@@ -1,7 +1,7 @@
 package com.unicornstudy.singleshop.oauth2.dto;
 
-import com.unicornstudy.singleshop.user.Role;
-import com.unicornstudy.singleshop.user.User;
+import com.unicornstudy.singleshop.user.domain.Role;
+import com.unicornstudy.singleshop.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
