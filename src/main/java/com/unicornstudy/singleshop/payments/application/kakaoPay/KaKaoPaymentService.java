@@ -3,7 +3,6 @@ package com.unicornstudy.singleshop.payments.application.kakaoPay;
 import com.unicornstudy.singleshop.payments.application.PaymentService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
-import com.unicornstudy.singleshop.payments.kakaoPay.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class KaKaoPaymentService implements PaymentService {
 
     private static final String BASE_URL = "https://kapi.kakao.com/v1/payment";
-    private static final String PATH = "/api/payments/kakaopay";
+    private static final String PATH = "/api/payments/application/kakaopay";
 
     @Value("${admin-key}")
     private String admin_key;
