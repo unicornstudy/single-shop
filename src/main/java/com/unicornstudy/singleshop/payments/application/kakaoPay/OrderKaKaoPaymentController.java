@@ -7,7 +7,6 @@ import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.orders.application.OrderService;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
-import com.unicornstudy.singleshop.payments.kakaoPay.dto.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
