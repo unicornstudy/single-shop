@@ -1,11 +1,11 @@
 package com.unicornstudy.singleshop.exception;
 
-import com.unicornstudy.singleshop.carts.exception.CartException;
-import com.unicornstudy.singleshop.items.exception.ItemsException;
-import com.unicornstudy.singleshop.orders.OrderService;
-import com.unicornstudy.singleshop.orders.exception.OrderException;
-import com.unicornstudy.singleshop.payments.exception.ApproveException;
-import com.unicornstudy.singleshop.payments.exception.PaymentsException;
+import com.unicornstudy.singleshop.exception.carts.CartException;
+import com.unicornstudy.singleshop.exception.items.ItemsException;
+import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.exception.orders.OrderException;
+import com.unicornstudy.singleshop.exception.payments.ApproveException;
+import com.unicornstudy.singleshop.exception.payments.PaymentsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

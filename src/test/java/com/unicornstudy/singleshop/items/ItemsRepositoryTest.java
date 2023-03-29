@@ -1,5 +1,7 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
