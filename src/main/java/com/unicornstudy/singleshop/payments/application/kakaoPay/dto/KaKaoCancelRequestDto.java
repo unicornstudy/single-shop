@@ -1,28 +1,29 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
-import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
 
 @Getter
-@NoArgsConstructor
 public class KaKaoCancelRequestDto {
+    private final String cid;
+    private final String tid;
+    private final String cancel_amount;
+    private final String cancel_tax_free_amount;
 
-    private MultiValueMap body = new LinkedMultiValueMap();
-
-    public static KaKaoCancelRequestDto createKaKaoCancelRequestDtoForOrder(OrderDto orderDto, String cid) {
-        KaKaoCancelRequestDto kaKaoCancelRequestDto = new KaKaoCancelRequestDto();
-        kaKaoCancelRequestDto.initializeForOrder(orderDto, cid);
-        return kaKaoCancelRequestDto;
+    @Builder
+    public KaKaoCancelRequestDto(String cid, String tid, String cancel_amount, String cancel_tax_free_amount) {
+        this.cid = cid;
+        this.tid = tid;
+        this.cancel_amount = cancel_amount;
+        this.cancel_tax_free_amount = cancel_tax_free_amount;
     }
 
-    public void initializeForOrder(OrderDto orderDto, String cid) {
-        body.add("cid", cid);
-        body.add("tid", orderDto.getPayment().getTid());
-        body.add("cancel_amount", String.valueOf(orderDto.getPayment().getPrice()));
-        body.add("cancel_tax_free_amount", "0");
+    public static KaKaoCancelRequestDto of(String cid, String tid, String cancel_amount, String cancel_tax_free_amount) {
+        return KaKaoCancelRequestDto.builder()
+                .cid(cid)
+                .tid(tid)
+                .cancel_amount(cancel_amount)
+                .cancel_tax_free_amount(cancel_tax_free_amount)
+                .build();
     }
 }

@@ -2,6 +2,7 @@ package com.unicornstudy.singleshop.exception;
 
 import com.unicornstudy.singleshop.exception.carts.CartException;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
+import com.unicornstudy.singleshop.exception.payments.SubscriptionApproveException;
 import com.unicornstudy.singleshop.orders.application.OrderService;
 import com.unicornstudy.singleshop.exception.orders.OrderException;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
@@ -42,6 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApproveException.class)
     public ResponseEntity<String> handleApproveException(ApproveException e) {
         orderService.handleOrderPaymentError(e.getOrderId());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler(SubscriptionApproveException.class)
+    public ResponseEntity<String> handleSubscriptionApproveException(SubscriptionApproveException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

@@ -1,41 +1,50 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
-import com.unicornstudy.singleshop.carts.application.dto.ReadCartResponseDto;
-import com.unicornstudy.singleshop.user.domain.Role;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
-import java.util.List;
 
 @Getter
 public class KaKaoReadyRequestDto {
+    private final String cid;
+    private final String approval_url;
+    private final String cancel_url;
+    private final String fail_url;
+    private final String partner_order_id;
+    private final String partner_user_id;
+    private final String item_name;
+    private final String quantity;
+    private final String total_amount;
+    private final String tax_free_amount;
 
-    private MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-
-    public static KaKaoReadyRequestDto createKaKaoReadyRequestDtoForOrder(String userId, List<ReadCartResponseDto> cart, Role role, String cid,
-                                                                          String approval_url, String cancel_url, String fail_url) {
-        KaKaoReadyRequestDto readyRequestDto = new KaKaoReadyRequestDto();
-        readyRequestDto.initializeForOrder(userId, cart, role, cid, approval_url, cancel_url, fail_url);
-
-        return readyRequestDto;
+    @Builder
+    public KaKaoReadyRequestDto(String cid, String approval_url, String cancel_url, String fail_url, String partner_order_id
+            , String partner_user_id, String item_name, String quantity, String total_amount, String tax_free_amount) {
+        this.cid = cid;
+        this.approval_url = approval_url;
+        this.cancel_url = cancel_url;
+        this.fail_url = fail_url;
+        this.partner_order_id = partner_order_id;
+        this.partner_user_id = partner_user_id;
+        this.item_name = item_name;
+        this.quantity = quantity;
+        this.total_amount = total_amount;
+        this.tax_free_amount = tax_free_amount;
     }
 
-    private void initializeForOrder(String userId, List<ReadCartResponseDto> cart, Role role, String cid,
-                                   String approval_url, String cancel_url, String fail_url) {
-        body.add("cid", cid);
-        body.add("approval_url", approval_url);
-        body.add("cancel_url", cancel_url);
-        body.add("fail_url", fail_url);
-        body.add("partner_order_id", "주문 결제");
-        body.add("partner_user_id", userId);
-        body.add("item_name", cart.size() == 1 ? cart.get(0).getItemName() : cart.get(0).getItemName() + "외" + (cart.size() - 1) + "개의 상품");
-        body.add("quantity", String.valueOf(cart.size()));
-        body.add("total_amount", String.valueOf(cart.stream().mapToInt(ReadCartResponseDto :: getPrice).sum() + checkSubscriber(role)));
-        body.add("tax_free_amount", String.valueOf(0));
-    }
+    public static KaKaoReadyRequestDto of(String cid, String approval_url, String cancel_url, String fail_url, String partner_order_id
+            , String partner_user_id, String item_name, String quantity, String total_amount, String tax_free_amount) {
 
-    private int checkSubscriber(Role role) {
-        return (role == Role.USER) ? 3000 : 0;
+        return KaKaoReadyRequestDto.builder()
+                .cid(cid)
+                .approval_url(approval_url)
+                .cancel_url(cancel_url)
+                .fail_url(fail_url)
+                .partner_order_id(partner_order_id)
+                .partner_user_id(partner_user_id)
+                .item_name(item_name)
+                .quantity(quantity)
+                .total_amount(total_amount)
+                .tax_free_amount(tax_free_amount)
+                .build();
     }
 }

@@ -8,6 +8,7 @@ import com.unicornstudy.singleshop.items.domain.Items;
 import com.unicornstudy.singleshop.orders.domain.OrderItem;
 import com.unicornstudy.singleshop.orders.domain.Orders;
 import com.unicornstudy.singleshop.payments.domain.Payment;
+import com.unicornstudy.singleshop.subscription.domain.Subscription;
 import com.unicornstudy.singleshop.user.domain.Role;
 import com.unicornstudy.singleshop.user.domain.User;
 import org.springframework.data.domain.PageRequest;
@@ -90,5 +91,9 @@ public class TestSetting {
         List<Orders> orders = new ArrayList<>();
         orders.add(order);
         return orders;
+    }
+
+    public static Subscription setSubscription(User user, Payment payment) {
+        return Subscription.createSubscription(user, payment);
     }
 }

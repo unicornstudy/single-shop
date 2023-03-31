@@ -2,7 +2,6 @@ package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
 import lombok.Getter;
 
-
 @Getter
 public class KaKaoApproveResponseDto {
     private String code;
