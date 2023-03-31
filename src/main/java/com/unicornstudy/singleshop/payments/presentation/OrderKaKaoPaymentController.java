@@ -1,22 +1,22 @@
-package com.unicornstudy.singleshop.payments.application.kakaoPay;
+package com.unicornstudy.singleshop.payments.presentation;
 
 import com.unicornstudy.singleshop.carts.application.CartService;
 import com.unicornstudy.singleshop.carts.application.dto.ReadCartResponseDto;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.orders.application.OrderService;
-import com.unicornstudy.singleshop.payments.domain.Payment;
+import com.unicornstudy.singleshop.payments.application.kakaoPay.KaKaoPaymentService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
+import com.unicornstudy.singleshop.payments.application.kakaoPay.utils.PaymentConverter;
+import com.unicornstudy.singleshop.payments.domain.Payment;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -31,21 +31,18 @@ public class OrderKaKaoPaymentController {
     private final KaKaoConfiguration kaKaoConfiguration;
 
     @GetMapping
-    public ResponseEntity requestReady(@LoginUser SessionUser user, HttpSession httpSession) throws URISyntaxException {
+    public ResponseEntity requestReady(@LoginUser SessionUser user, HttpSession httpSession) {
         List<ReadCartResponseDto> carts = cartService.findAllCartItemListByUser(user.getEmail());
 
-        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.createKaKaoReadyRequestDtoForOrder(user.getEmail(), carts, user.getRole(),
-                kaKaoConfiguration.getCid(), kaKaoConfiguration.getApproval_url(), kaKaoConfiguration.getCancel_url(), kaKaoConfiguration.getFail_url());
+        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApproval_url(), kaKaoConfiguration.getCancel_url(), kaKaoConfiguration.getFail_url(), "주문 결제", user.getEmail(), PaymentConverter.convertItemName(carts), String.valueOf(carts.size()), PaymentConverter.convertTotalAmount(carts, user.getRole()), "0");
         KaKaoReadyResponseDto readyResponse = paymentsService.requestKaKaoToReady(readyRequestDto).block();
 
         httpSession.setAttribute("tid", readyResponse.getTid());
         httpSession.setAttribute("readyRequestDto", readyRequestDto);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI(readyResponse.getNext_redirect_pc_url()));
 
         return ResponseEntity
                 .status(HttpStatus.TEMPORARY_REDIRECT)
-                .headers(httpHeaders)
+                .location(URI.create(readyResponse.getNext_redirect_pc_url()))
                 .build();
     }
 
@@ -54,8 +51,13 @@ public class OrderKaKaoPaymentController {
                                                                   @RequestParam("pg_token") String pg_token) {
         String tid = (String) httpSession.getAttribute("tid");
         KaKaoReadyRequestDto readyRequestDto = (KaKaoReadyRequestDto) httpSession.getAttribute("readyRequestDto");
-        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.createApproveRequestDto(tid, pg_token, readyRequestDto);
-        Long orderId = orderService.order(user.getEmail(), Payment.builder().tid(tid).paymentKind("kakao").price(readyRequestDto.getBody().get("total_amount").get(0)).build());
+        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.of(readyRequestDto.getCid(), tid, readyRequestDto.getPartner_order_id(), readyRequestDto.getPartner_user_id(), pg_token );
+        Long orderId = orderService.order(user.getEmail(),
+                Payment.builder()
+                .tid(tid)
+                .paymentKind("kakao")
+                .price(readyRequestDto.getTotal_amount())
+                .build());
         KaKaoApproveResponseDto responseDto = paymentsService.requestKaKaoToApprove(approveRequestDto, orderId).block();
         httpSession.removeAttribute("tid");
         httpSession.removeAttribute("readyRequestDto");
@@ -65,7 +67,8 @@ public class OrderKaKaoPaymentController {
 
     @PostMapping("/{id}")
     public ResponseEntity<KaKaoCancelResponseDto> requestCancel(@PathVariable("id") Long id) {
-        KaKaoCancelRequestDto cancelRequestDto = KaKaoCancelRequestDto.createKaKaoCancelRequestDtoForOrder(orderService.cancel(id), kaKaoConfiguration.getCid());
+        Payment paymentInfo = orderService.cancel(id).getPayment();
+        KaKaoCancelRequestDto cancelRequestDto = KaKaoCancelRequestDto.of(kaKaoConfiguration.getCid(), paymentInfo.getTid(), paymentInfo.getPrice(), "0");
         KaKaoCancelResponseDto responseDto = paymentsService.requestKaKaoToCancel(cancelRequestDto).block();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

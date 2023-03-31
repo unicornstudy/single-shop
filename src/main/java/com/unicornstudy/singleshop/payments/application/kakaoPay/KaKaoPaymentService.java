@@ -1,8 +1,8 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay;
 
-import com.unicornstudy.singleshop.payments.application.PaymentService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
+import com.unicornstudy.singleshop.payments.application.kakaoPay.utils.MultiValueMapConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +15,9 @@ import reactor.core.publisher.Mono;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KaKaoPaymentService implements PaymentService {
+public class KaKaoPaymentService {
 
     private static final String BASE_URL = "https://kapi.kakao.com/v1/payment";
-    private static final String PATH = "/api/payments/application/kakaopay";
 
     @Value("${admin-key}")
     private String admin_key;
@@ -27,24 +26,18 @@ public class KaKaoPaymentService implements PaymentService {
             .baseUrl(BASE_URL)
             .build();
 
-    @Override
-    public HttpHeaders initializePaymentsHeaders() {
+    public HttpHeaders updatePaymentsHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "KakaoAK " + admin_key);
         httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         return httpHeaders;
     }
 
-    @Override
-    public String getPaymentPath() {
-        return PATH;
-    }
-
     public Mono<KaKaoReadyResponseDto> requestKaKaoToReady(KaKaoReadyRequestDto readyRequestDto) {
         return webClient.post()
                 .uri("/ready")
-                .headers(headers -> headers.addAll(initializePaymentsHeaders()))
-                .body(BodyInserters.fromFormData(readyRequestDto.getBody()))
+                .headers(headers -> headers.addAll(updatePaymentsHeaders()))
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(readyRequestDto)))
                 .retrieve()
                 .bodyToMono(KaKaoReadyResponseDto.class);
     }
@@ -52,8 +45,8 @@ public class KaKaoPaymentService implements PaymentService {
     public Mono<KaKaoApproveResponseDto> requestKaKaoToApprove(KaKaoApproveRequestDto approveRequestDto, Long orderId) {
         return webClient.post()
                 .uri("/approve")
-                .headers(headers -> headers.addAll(initializePaymentsHeaders()))
-                .body(BodyInserters.fromFormData(approveRequestDto.getBody()))
+                .headers(headers -> headers.addAll(updatePaymentsHeaders()))
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(approveRequestDto)))
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError()
                                 || status.is5xxServerError()
@@ -66,8 +59,8 @@ public class KaKaoPaymentService implements PaymentService {
     public Mono<KaKaoCancelResponseDto> requestKaKaoToCancel(KaKaoCancelRequestDto cancelRequestDto) {
         return webClient.post()
                 .uri("/cancel")
-                .headers(headers -> headers.addAll(initializePaymentsHeaders()))
-                .body(BodyInserters.fromFormData(cancelRequestDto.getBody()))
+                .headers(headers -> headers.addAll(updatePaymentsHeaders()))
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(cancelRequestDto)))
                 .retrieve()
                 .bodyToMono(KaKaoCancelResponseDto.class);
     }

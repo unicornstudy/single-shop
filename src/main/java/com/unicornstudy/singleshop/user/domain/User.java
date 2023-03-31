@@ -46,6 +46,16 @@ public class User {
     @Embedded
     private Address address;
 
+    private String sid;
+
+    public void updateSid(String sid) {
+        this.sid = sid;
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
+    }
+
     public void initializeCart(Cart cart) {
         this.cart = cart;
     }

@@ -16,7 +16,6 @@ import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
 import com.unicornstudy.singleshop.orders.domain.*;
 import com.unicornstudy.singleshop.orders.domain.repository.OrderItemRepository;
 import com.unicornstudy.singleshop.orders.domain.repository.OrderRepository;
-import com.unicornstudy.singleshop.orders.exception.*;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.user.domain.User;
 import com.unicornstudy.singleshop.user.domain.repository.UserRepository;
