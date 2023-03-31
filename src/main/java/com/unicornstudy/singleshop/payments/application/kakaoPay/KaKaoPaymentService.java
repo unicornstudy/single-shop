@@ -4,7 +4,6 @@ import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.utils.MultiValueMapConverter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class KaKaoPaymentService {
 

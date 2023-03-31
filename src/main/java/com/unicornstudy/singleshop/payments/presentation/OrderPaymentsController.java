@@ -3,7 +3,6 @@ package com.unicornstudy.singleshop.payments.presentation;
 import com.unicornstudy.singleshop.orders.application.OrderService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.PaymentHandler;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/payments")
-@Slf4j
 public class OrderPaymentsController {
 
     private final OrderService orderService;
