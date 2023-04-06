@@ -7,7 +7,6 @@ import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.orders.application.OrderService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.KaKaoPaymentService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
-import com.unicornstudy.singleshop.payments.application.kakaoPay.utils.PaymentConverter;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+
+import static com.unicornstudy.singleshop.payments.application.kakaoPay.utils.CartToPaymentItemConverter.convertItemName;
+import static com.unicornstudy.singleshop.payments.application.kakaoPay.utils.CartToPaymentItemConverter.convertTotalAmount;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class OrderKaKaoPaymentController {
     public ResponseEntity requestReady(@LoginUser SessionUser user, HttpSession httpSession) {
         List<ReadCartResponseDto> carts = cartService.findAllCartItemListByUser(user.getEmail());
 
-        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApproval_url(), kaKaoConfiguration.getCancel_url(), kaKaoConfiguration.getFail_url(), "주문 결제", user.getEmail(), PaymentConverter.convertItemName(carts), String.valueOf(carts.size()), PaymentConverter.convertTotalAmount(carts, user.getRole()), "0");
+        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApproval_url(), kaKaoConfiguration.getCancel_url(), kaKaoConfiguration.getFail_url(), "주문 결제", user.getEmail(), convertItemName(carts), String.valueOf(carts.size()), convertTotalAmount(carts, user.getRole()), "0");
         KaKaoReadyResponseDto readyResponse = paymentsService.requestKaKaoToReady(readyRequestDto).block();
 
         httpSession.setAttribute("tid", readyResponse.getTid());

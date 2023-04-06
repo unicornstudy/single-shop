@@ -43,11 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApproveException.class)
     public ResponseEntity<String> handleApproveException(ApproveException e) {
         orderService.handleOrderPaymentError(e.getOrderId());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(SubscriptionApproveException.class)
     public ResponseEntity<String> handleSubscriptionApproveException(SubscriptionApproveException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

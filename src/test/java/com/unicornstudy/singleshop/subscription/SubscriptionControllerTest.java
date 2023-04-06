@@ -11,6 +11,7 @@ import com.unicornstudy.singleshop.subscription.presentation.SubscriptionControl
 import com.unicornstudy.singleshop.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -68,6 +69,7 @@ public class SubscriptionControllerTest {
     }
 
     @Test
+    @DisplayName("현재까지 사용자가 결제한 구독 정보 조회 컨트롤러 테스트")
     public void 조회_테스트() throws Exception {
         List<SubscriptionDto> result = new ArrayList<>();
         result.add(SubscriptionDto.from(subscription));

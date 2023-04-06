@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.unicornstudy.singleshop.payments.application.kakaoPay.utils.CartToPaymentItemConverter.convertItemName;
+import static com.unicornstudy.singleshop.payments.application.kakaoPay.utils.CartToPaymentItemConverter.convertTotalAmount;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class PaymentConverterTest {
@@ -28,11 +30,11 @@ class PaymentConverterTest {
         role = Role.SUBSCRIBER;
     }
 
-    @DisplayName("장바구니를 상품 이름으로 변화시키는 테스트")
+    @DisplayName("장바구니 정보를 결제시 필요한 상품 이름으로 변환시키는 테스트")
     @Test
     void convertItemName_테스트() {
         //when
-        String result = PaymentConverter.convertItemName(carts);
+        String result = convertItemName(carts);
 
         //then
         assertThat(result).isEqualTo(cartItem.getItem().getName());
@@ -41,7 +43,7 @@ class PaymentConverterTest {
     @Test
     void convertTotalAmount_테스트() {
         //when
-        String result = PaymentConverter.convertTotalAmount(carts, role);
+        String result = convertTotalAmount(carts, role);
 
         //then
         assertThat(result).isEqualTo(String.valueOf(cartItem.getItem().getPrice()));
