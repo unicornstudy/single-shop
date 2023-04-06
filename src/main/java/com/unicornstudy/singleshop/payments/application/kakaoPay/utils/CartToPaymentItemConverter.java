@@ -5,7 +5,10 @@ import com.unicornstudy.singleshop.user.domain.Role;
 
 import java.util.List;
 
-public class PaymentConverter {
+import static com.unicornstudy.singleshop.subscription.application.utils.DateCalculator.PRICE;
+import static com.unicornstudy.singleshop.subscription.application.utils.DateCalculator.SUBSCRIPTION_USER_DELIVERY_PRICE;
+
+public class CartToPaymentItemConverter {
 
     public static String convertItemName(List<ReadCartResponseDto> cart) {
         return cart.size() == 1 ? cart.get(0).getItemName() : cart.get(0).getItemName() + "외" + (cart.size() - 1) + "개의 상품";
@@ -16,7 +19,7 @@ public class PaymentConverter {
     }
 
     private static int calculateDeliveryPrice(Role role) {
-        return isSubscriber(role) ? 0 : 3000;
+        return isSubscriber(role) ? Integer.valueOf(SUBSCRIPTION_USER_DELIVERY_PRICE) : Integer.valueOf(PRICE);
     }
 
     public static boolean isSubscriber(Role role) {
