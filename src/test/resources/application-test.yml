@@ -1,3 +1,19 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
+    job:
+      names: ${job.name:NONE}
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: update
+  datasource:
+    url: jdbc:tc:mysql:8.0.31:///unicornTest?TC_INITSCRIPT=file:src/test/resources/schema.sql
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+admin-key: "${kakaoAdminKey}"
 cid: "${kakaoPayTestCid}"
 subscription-cid: "${kakaoPayTestSubscriptionCid}"
 approve-url: http://localhost:8080/api/payments/kakaopay/approve
