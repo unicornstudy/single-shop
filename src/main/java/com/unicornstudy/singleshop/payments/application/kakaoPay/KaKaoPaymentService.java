@@ -1,5 +1,7 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay;
 
+import com.unicornstudy.singleshop.exception.payments.SubscriptionApproveException;
+import com.unicornstudy.singleshop.exception.subscription.RegularPaymentException;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.utils.MultiValueMapConverter;
@@ -43,4 +45,40 @@ public class KaKaoPaymentService {
                 .retrieve()
                 .bodyToMono(KaKaoCancelResponseDto.class);
     }
+
+    public Mono<KaKaoApproveResponseDto> requestKaKaoToApprove(KaKaoApproveRequestDto approveRequestDto) {
+        return webClient.post()
+                .uri("/approve")
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(approveRequestDto)))
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError()
+                                || status.is5xxServerError()
+                        , clientResponse -> {
+                            throw new SubscriptionApproveException();
+                        })
+                .bodyToMono(KaKaoApproveResponseDto.class);
+    }
+
+    public Mono<KaKaoSubscriptionResponseDto> requestKaKaoToSubscription(KaKaoSubscriptionRequestDto subscriptionRequestDto, String userEmail) {
+        return webClient.post()
+                .uri("/subscription")
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(subscriptionRequestDto)))
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError()
+                                || status.is5xxServerError()
+                        , clientResponse -> {
+                            throw new RegularPaymentException(userEmail);
+                        })
+                .bodyToMono(KaKaoSubscriptionResponseDto.class);
+    }
+
+    public Mono<KaKaoSubscriptionCancelResponseDto> requestKaKaoToSubscriptionCancel(KaKaoSubscriptionCancelRequestDto subscriptionCancelRequestDto) {
+        return webClient.post()
+                .uri("/manage/subscription/inactive")
+                .body(BodyInserters.fromFormData(MultiValueMapConverter.convert(subscriptionCancelRequestDto)))
+                .retrieve()
+                .bodyToMono(KaKaoSubscriptionCancelResponseDto.class);
+    }
+
+
 }
