@@ -1,15 +1,18 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KaKaoReadyResponseDto {
     private String tid;
-    private String tms_result;
-    private String next_redirect_app_url;
-    private String next_redirect_mobile_url;
-    private String next_redirect_pc_url;
-    private String android_app_scheme;
-    private String ios_app_scheme;
-    private String created_at;
+    private String tmsResult;
+    private String nextRedirectAppUrl;
+    private String nextRedirectMobileUrl;
+    private String nextRedirectPcUrl;
+    private String androidAppScheme;
+    private String iosAppScheme;
+    private String createdAt;
 }

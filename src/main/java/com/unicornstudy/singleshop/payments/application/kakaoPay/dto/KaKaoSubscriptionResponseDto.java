@@ -1,14 +1,17 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KaKaoSubscriptionResponseDto {
-    private String partner_order_id;
-    private String partner_user_id;
-    private String payment_method_type;
-    private String item_name;
-    private String item_code;
+    private String partnerOrderId;
+    private String partnerUserId;
+    private String paymentMethodType;
+    private String itemName;
+    private String itemCode;
     private String quantity;
     private String code;
 }
