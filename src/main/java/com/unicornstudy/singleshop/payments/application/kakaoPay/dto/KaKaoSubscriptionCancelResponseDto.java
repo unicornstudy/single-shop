@@ -1,13 +1,16 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KaKaoSubscriptionCancelResponseDto {
     private String cid;
     private String sid;
     private String status;
-    private String created_at;
-    private String inactivated_at;
-    private String last_approved_at;
+    private String createdAt;
+    private String inactivatedAt;
+    private String lastApprovedAt;
 }

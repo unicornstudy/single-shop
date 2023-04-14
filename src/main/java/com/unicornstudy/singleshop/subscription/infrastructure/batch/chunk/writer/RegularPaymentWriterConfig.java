@@ -30,7 +30,7 @@ public class RegularPaymentWriterConfig {
         return chunk -> {
             for (User user : chunk.getItems()) {
                 try {
-                    KaKaoSubscriptionCancelRequestDto requestDto = KaKaoSubscriptionCancelRequestDto.of(kakaoConfiguration.getSubscription_cid(), user.getSid());
+                    KaKaoSubscriptionCancelRequestDto requestDto = KaKaoSubscriptionCancelRequestDto.of(kakaoConfiguration.getSubscriptionCid(), user.getSid());
                     subscriptionService.cancelSubscription(user.getEmail());
                     paymentService.requestKaKaoToSubscriptionCancel(requestDto).block();
                 } catch (Exception e) {
@@ -48,7 +48,7 @@ public class RegularPaymentWriterConfig {
                 try {
                     KaKaoSubscriptionRequestDto subscriptionRequestDto = KaKaoSubscriptionRequestDto.of(kakaoConfiguration.getCid(), user.getSid(), "구독", user.getEmail(), "1", "5000", "0");
                     paymentService.requestKaKaoToSubscription(subscriptionRequestDto, user.getEmail()).block();
-                    subscriptionService.subscribe(user.getEmail(), Payment.builder().paymentKind("kakao").sid(user.getSid()).price(subscriptionRequestDto.getTotal_amount()).build());
+                    subscriptionService.subscribe(user.getEmail(), Payment.builder().paymentKind("kakao").sid(user.getSid()).price(subscriptionRequestDto.getTotalAmount()).build());
                 } catch (RegularPaymentException e) {
                     log.info("정기구독 오류");
                     subscriptionService.handleSubscriptionPaymentError(user.getEmail());

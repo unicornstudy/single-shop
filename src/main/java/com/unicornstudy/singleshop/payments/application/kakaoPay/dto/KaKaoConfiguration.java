@@ -11,23 +11,23 @@ public class KaKaoConfiguration {
     private String cid;
 
     @Value("${approve-url}")
-    private String approval_url;
+    private String approvalUrl;
 
     @Value("${cancel-url}")
-    private String cancel_url;
+    private String cancelUrl;
 
     @Value("${fail-url}")
-    private String fail_url;
+    private String failUrl;
 
     @Value("${subscription-cid}")
-    private String subscription_cid;
+    private String subscriptionCid;
 
     @Value("${subscription-approve-url}")
-    private String subscription_approval_url;
+    private String subscriptionApprovalUrl;
 
     @Value("${subscription-cancel-url}")
-    private String subscription_cancel_url;
+    private String subscriptionCancelUrl;
 
     @Value("${subscription-fail-url}")
-    private String subscription_fail_url;
+    private String subscriptionFailUrl;
 }

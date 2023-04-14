@@ -36,7 +36,7 @@ public class OrderKaKaoPaymentController {
     public ResponseEntity requestReady(@LoginUser SessionUser user, HttpSession httpSession) {
         List<ReadCartResponseDto> carts = cartService.findAllCartItemListByUser(user.getEmail());
 
-        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApproval_url(), kaKaoConfiguration.getCancel_url(), kaKaoConfiguration.getFail_url(), "주문 결제", user.getEmail(), convertItemName(carts), String.valueOf(carts.size()), convertTotalAmount(carts, user.getRole()), "0");
+        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApprovalUrl(), kaKaoConfiguration.getCancelUrl(), kaKaoConfiguration.getFailUrl(), "주문 결제", user.getEmail(), convertItemName(carts), String.valueOf(carts.size()), convertTotalAmount(carts, user.getRole()), "0");
         KaKaoReadyResponseDto readyResponse = paymentsService.requestKaKaoToReady(readyRequestDto).block();
 
         httpSession.setAttribute("tid", readyResponse.getTid());
@@ -44,21 +44,21 @@ public class OrderKaKaoPaymentController {
 
         return ResponseEntity
                 .status(HttpStatus.TEMPORARY_REDIRECT)
-                .location(URI.create(readyResponse.getNext_redirect_pc_url()))
+                .location(URI.create(readyResponse.getNextRedirectPcUrl()))
                 .build();
     }
 
     @GetMapping("/approve")
     public ResponseEntity<KaKaoApproveResponseDto> requestApprove(@LoginUser SessionUser user, HttpSession httpSession,
-                                                                  @RequestParam("pg_token") String pg_token) {
+                                                                  @RequestParam("pg_token") String pgToken) {
         String tid = (String) httpSession.getAttribute("tid");
         KaKaoReadyRequestDto readyRequestDto = (KaKaoReadyRequestDto) httpSession.getAttribute("readyRequestDto");
-        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.of(readyRequestDto.getCid(), tid, readyRequestDto.getPartner_order_id(), readyRequestDto.getPartner_user_id(), pg_token );
+        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.of(readyRequestDto.getCid(), tid, readyRequestDto.getPartnerOrderId(), readyRequestDto.getPartnerUserId(), pgToken );
         Long orderId = orderService.order(user.getEmail(),
                 Payment.builder()
                 .tid(tid)
                 .paymentKind("kakao")
-                .price(readyRequestDto.getTotal_amount())
+                .price(readyRequestDto.getTotalAmount())
                 .build());
         KaKaoApproveResponseDto responseDto = paymentsService.requestKaKaoToApprove(approveRequestDto, orderId).block();
         httpSession.removeAttribute("tid");

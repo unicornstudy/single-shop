@@ -1,32 +1,35 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KaKaoApproveRequestDto {
     private final String cid;
     private final String tid;
-    private final String partner_order_id;
-    private final String partner_user_id;
-    private final String pg_token;
+    private final String partnerOrderId;
+    private final String partnerUserId;
+    private final String pgToken;
 
     @Builder
-    public KaKaoApproveRequestDto(String cid, String tid, String partner_order_id, String partner_user_id, String pg_token) {
+    public KaKaoApproveRequestDto(String cid, String tid, String partnerOrderId, String partnerUserId, String pgToken) {
         this.cid = cid;
         this.tid = tid;
-        this.partner_order_id = partner_order_id;
-        this.partner_user_id = partner_user_id;
-        this.pg_token = pg_token;
+        this.partnerOrderId = partnerOrderId;
+        this.partnerUserId = partnerUserId;
+        this.pgToken = pgToken;
     }
 
-    public static KaKaoApproveRequestDto of(String cid, String tid, String partner_order_id, String partner_user_id, String pg_token) {
+    public static KaKaoApproveRequestDto of(String cid, String tid, String partnerOrderId, String partnerUserId, String pgToken) {
         return KaKaoApproveRequestDto.builder()
                 .cid(cid)
                 .tid(tid)
-                .partner_order_id(partner_order_id)
-                .partner_user_id(partner_user_id)
-                .pg_token(pg_token)
+                .partnerOrderId(partnerOrderId)
+                .partnerUserId(partnerUserId)
+                .pgToken(pgToken)
                 .build();
     }
 }

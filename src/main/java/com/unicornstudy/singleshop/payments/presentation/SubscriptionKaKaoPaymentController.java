@@ -34,7 +34,7 @@ public class SubscriptionKaKaoPaymentController {
     public ResponseEntity<KaKaoReadyResponseDto> requestReady(@LoginUser SessionUser user, HttpSession httpSession) {
 
         subscriptionService.checkSubscriptionUser(user.getEmail());
-        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kakaoConfiguration.getSubscription_cid(), kakaoConfiguration.getSubscription_approval_url(), kakaoConfiguration.getSubscription_cancel_url(), kakaoConfiguration.getSubscription_fail_url(), "구독 결제", user.getEmail(), "구독", "1", calculate(user.getRole()), "0");
+        KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kakaoConfiguration.getSubscriptionCid(), kakaoConfiguration.getSubscriptionApprovalUrl(), kakaoConfiguration.getSubscriptionCancelUrl(), kakaoConfiguration.getSubscriptionFailUrl(), "구독 결제", user.getEmail(), "구독", "1", calculate(user.getRole()), "0");
         KaKaoReadyResponseDto readyResponse = paymentsService.requestKaKaoToReady(readyRequestDto).block();
 
         httpSession.setAttribute("tid", readyResponse.getTid());
@@ -42,7 +42,7 @@ public class SubscriptionKaKaoPaymentController {
 
         return ResponseEntity
                 .status(HttpStatus.TEMPORARY_REDIRECT)
-                .location(URI.create(readyResponse.getNext_redirect_pc_url()))
+                .location(URI.create(readyResponse.getNextRedirectPcUrl()))
                 .build();
     }
 
@@ -51,9 +51,9 @@ public class SubscriptionKaKaoPaymentController {
         String tid = (String) httpSession.getAttribute("tid");
         KaKaoReadyRequestDto readyRequestDto = (KaKaoReadyRequestDto) httpSession.getAttribute("readyRequestDto");
 
-        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.of(readyRequestDto.getCid(), tid, readyRequestDto.getPartner_order_id(), user.getEmail(), pg_token);
+        KaKaoApproveRequestDto approveRequestDto = KaKaoApproveRequestDto.of(readyRequestDto.getCid(), tid, readyRequestDto.getPartnerOrderId(), user.getEmail(), pg_token);
         KaKaoApproveResponseDto responseDto = paymentsService.requestKaKaoToApprove(approveRequestDto).block();
-        subscriptionService.subscribe(user.getEmail(), Payment.builder().paymentKind("kakao").tid(tid).sid(responseDto.getSid()).price(readyRequestDto.getTotal_amount()).build());
+        subscriptionService.subscribe(user.getEmail(), Payment.builder().paymentKind("kakao").tid(tid).sid(responseDto.getSid()).price(readyRequestDto.getTotalAmount()).build());
 
         httpSession.removeAttribute("tid");
         httpSession.removeAttribute("readyRequestDto");

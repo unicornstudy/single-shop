@@ -1,38 +1,41 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KaKaoSubscriptionRequestDto {
     private final String cid;
     private final String sid;
-    private final String partner_order_id;
-    private final String partner_user_id;
+    private final String partnerOrderId;
+    private final String partnerUserId;
     private final String quantity;
-    private final String total_amount;
-    private final String tax_free_amount;
+    private final String totalAmount;
+    private final String taxFreeAmount;
 
     @Builder
-    public KaKaoSubscriptionRequestDto(String cid, String sid, String partner_order_id, String partner_user_id, String quantity, String total_amount, String tax_free_amount) {
+    public KaKaoSubscriptionRequestDto(String cid, String sid, String partnerOrderId, String partnerUserId, String quantity, String totalAmount, String taxFreeAmount) {
         this.cid = cid;
         this.sid = sid;
-        this.partner_order_id = partner_order_id;
-        this.partner_user_id = partner_user_id;
+        this.partnerOrderId = partnerOrderId;
+        this.partnerUserId = partnerUserId;
         this.quantity = quantity;
-        this.total_amount = total_amount;
-        this.tax_free_amount = tax_free_amount;
+        this.totalAmount = totalAmount;
+        this.taxFreeAmount = taxFreeAmount;
     }
 
-    public static KaKaoSubscriptionRequestDto of(String cid, String sid, String partner_order_id, String partner_user_id, String quantity, String total_amount, String tax_free_amount) {
+    public static KaKaoSubscriptionRequestDto of(String cid, String sid, String partnerOrderId, String partnerUserId, String quantity, String totalAmount, String taxFreeAmount) {
         return KaKaoSubscriptionRequestDto.builder()
                 .cid(cid)
                 .sid(sid)
-                .partner_order_id(partner_order_id)
-                .partner_user_id(partner_user_id)
+                .partnerOrderId(partnerOrderId)
+                .partnerUserId(partnerUserId)
                 .quantity(quantity)
-                .total_amount(total_amount)
-                .tax_free_amount(tax_free_amount)
+                .totalAmount(totalAmount)
+                .taxFreeAmount(taxFreeAmount)
                 .build();
     }
 }
