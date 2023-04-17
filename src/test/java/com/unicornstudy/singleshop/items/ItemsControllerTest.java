@@ -1,6 +1,7 @@
 package com.unicornstudy.singleshop.items;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unicornstudy.singleshop.config.TestSetting;
 import com.unicornstudy.singleshop.items.application.ItemsService;
 import com.unicornstudy.singleshop.items.application.dto.ItemsRequestDto;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -29,7 +31,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
@@ -48,13 +49,15 @@ public class ItemsControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private Pageable pageable;
+
     @BeforeEach
     void setUp() {
         String name1 = "상품1";
         Integer price1 = 1;
         String description1 = "설명1";
         Integer quantity1 = 1;
-
+        pageable = TestSetting.setPageable();
         itemsService.save(ItemsRequestDto.builder()
                 .name(name1)
                 .price(price1)
@@ -114,7 +117,7 @@ public class ItemsControllerTest {
     @Test
     void 상품조회테스트() throws Exception {
 
-        Long id = itemsService.findAll().get(0).getId();
+        Long id = itemsService.findAll(pageable).get(0).getId();
 
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/items/{id}", id))
                 .andExpect(status().isOk())
@@ -156,7 +159,7 @@ public class ItemsControllerTest {
 
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/items")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(itemsService.findAll())))
+                .content(objectMapper.writeValueAsString(itemsService.findAll(pageable))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].name").value("상품1"))
                 .andExpect(jsonPath("$.[0].price").value(1))
@@ -183,7 +186,7 @@ public class ItemsControllerTest {
     @Test
     void 상품수정테스트() throws Exception {
 
-        Long id = itemsService.findAll().get(0).getId();
+        Long id = itemsService.findAll(pageable).get(0).getId();
         String name2 = "상품2";
         Integer price2 = 2;
         String description2 = "설명2";

@@ -3,30 +3,30 @@ package com.unicornstudy.singleshop.orders.application.dto;
 import com.unicornstudy.singleshop.orders.domain.OrderStatus;
 import com.unicornstudy.singleshop.orders.domain.Orders;
 import com.unicornstudy.singleshop.payments.domain.Payment;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 public class OrderDto {
 
-    private LocalDateTime orderDate;
+    private final LocalDateTime orderDate;
+    private final OrderStatus status;
+    private final Payment payment;
 
-    private OrderStatus status;
-
-    private Payment payment;
-
-    public static OrderDto createOrderDto(Orders order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.initialize(order);
-        return orderDto;
+    @Builder
+    public OrderDto(LocalDateTime orderDate, OrderStatus status, Payment payment) {
+        this.orderDate = orderDate;
+        this.status = status;
+        this.payment = payment;
     }
 
-    private void initialize(Orders order) {
-        this.orderDate = order.getOrderDate();
-        this.status = order.getStatus();
-        this.payment = order.getPayment();
+    public static OrderDto from(Orders order) {
+        return OrderDto.builder()
+                .orderDate(order.getOrderDate())
+                .status(order.getStatus())
+                .payment(order.getPayment())
+                .build();
     }
 }

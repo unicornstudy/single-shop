@@ -148,15 +148,15 @@ public class OrderServiceTest {
 
     @Test
     public void 주문_재고_부족_예외() {
-        item.subtractQuantity();
-        assertThatThrownBy(() -> item.subtractQuantity())
+        item.decreaseQuantity();
+        assertThatThrownBy(() -> item.decreaseQuantity())
                 .isInstanceOf(ItemQuantityException.class)
                 .hasMessage(item.getName() + ItemQuantityException.ERROR_MESSAGE);
     }
 
     @Test
     public void 주문_상태_예외() {
-        order.changeOrderStatus(OrderStatus.CANCEL);
+        order.updateOrderStatus(OrderStatus.CANCEL);
         when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
         assertThatThrownBy(() -> orderService.cancel(order.getId()))
                 .isInstanceOf(OrderStatusException.class)

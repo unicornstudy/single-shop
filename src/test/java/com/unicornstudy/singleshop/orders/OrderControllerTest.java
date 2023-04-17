@@ -43,7 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
-@MockBean(JpaMetamodelMappingContext.class)
 @WithMockUser(roles = "USER")
 public class OrderControllerTest {
 
@@ -88,7 +87,7 @@ public class OrderControllerTest {
     @Test
     public void 주문_조회_테스트() throws Exception {
         List<OrderDto> result = new ArrayList<>();
-        result.add(OrderDto.createOrderDto(order));
+        result.add(OrderDto.from(order));
 
         when(orderService.findOrdersByUser(user.getEmail(), pageable)).thenReturn(result);
 
@@ -104,7 +103,7 @@ public class OrderControllerTest {
         List<OrderDetailDto> result = new ArrayList<>();
         order.getOrderItems()
                 .stream()
-                .forEach(orderItem -> result.add(OrderDetailDto.createOrderDetailDto(orderItem)));
+                .forEach(orderItem -> result.add(OrderDetailDto.from(orderItem)));
 
         when(orderService.findOrderDetailsById(order.getId(), pageable)).thenReturn(result);
 

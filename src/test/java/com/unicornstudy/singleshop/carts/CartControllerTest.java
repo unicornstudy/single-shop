@@ -57,7 +57,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureRestDocs
 @WebMvcTest(CartController.class)
-@MockBean(JpaMetamodelMappingContext.class)
 @WithMockUser(roles = "USER")
 @ExtendWith(RestDocumentationExtension.class)
 public class CartControllerTest {
@@ -107,7 +106,7 @@ public class CartControllerTest {
 
     @Test
     public void 장바구니_조회_테스트() throws Exception {
-        ReadCartResponseDto responseDto = new ReadCartResponseDto(cartItem);
+        ReadCartResponseDto responseDto = ReadCartResponseDto.from(cartItem);
         List<ReadCartResponseDto> responseDtoList = new ArrayList<>();
         responseDtoList.add(responseDto);
 
@@ -129,7 +128,7 @@ public class CartControllerTest {
 
     @Test
     public void 장바구니_조회_페이징_테스트() throws Exception {
-        ReadCartResponseDto responseDto = new ReadCartResponseDto(cartItem);
+        ReadCartResponseDto responseDto = ReadCartResponseDto.from(cartItem);
         List<ReadCartResponseDto> responseDtoList = new ArrayList<>();
         int size = 10;
         for (int i = 0; i < 100; i++) {

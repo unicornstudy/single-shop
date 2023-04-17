@@ -1,48 +1,44 @@
-package com.unicornstudy.singleshop.subscription;
+package com.unicornstudy.singleshop.user.presentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicornstudy.singleshop.config.TestSetting;
+import com.unicornstudy.singleshop.delivery.domain.Address;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.orders.application.OrderService;
-import com.unicornstudy.singleshop.payments.domain.Payment;
-import com.unicornstudy.singleshop.subscription.application.SubscriptionService;
-import com.unicornstudy.singleshop.subscription.application.dto.SubscriptionDto;
-import com.unicornstudy.singleshop.subscription.domain.Subscription;
-import com.unicornstudy.singleshop.subscription.presentation.SubscriptionController;
+import com.unicornstudy.singleshop.user.application.UserService;
+import com.unicornstudy.singleshop.user.application.dto.FindAddressDto;
+import com.unicornstudy.singleshop.user.application.dto.UpdateAddressDto;
 import com.unicornstudy.singleshop.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(SubscriptionController.class)
+@WebMvcTest(UserController.class)
 @WithMockUser(roles = "USER")
-public class SubscriptionControllerTest {
+class UserControllerTest {
 
     private MockMvc mvc;
 
     @MockBean
-    private SubscriptionService subscriptionService;
+    private UserService userService;
 
     @MockBean
     private OrderService orderService;
@@ -53,34 +49,41 @@ public class SubscriptionControllerTest {
     private MockHttpSession session = new MockHttpSession();
 
     private User user;
-    private Subscription subscription;
-    private Payment payment;
-    private Pageable pageable;
 
+    private UpdateAddressDto addressDto;
+
+    private Address address;
     @BeforeEach
     public void setUp() {
         setMvc();
-        user = TestSetting.setUser(TestSetting.setAddress());
-        pageable = TestSetting.setPageable();
-        payment = TestSetting.setPayment();
-        subscription = TestSetting.setSubscription(user, payment);
+        address = TestSetting.setAddress();
+        addressDto = new UpdateAddressDto(address.getCity(), address.getStreet(), address.getZipcode());
+        user = TestSetting.setUser(address);
         session.setAttribute("user", new SessionUser(user));
     }
 
     @Test
-    @DisplayName("현재까지 사용자가 결제한 구독 정보 조회 컨트롤러 테스트")
-    public void 조회_테스트() throws Exception {
-        List<SubscriptionDto> result = new ArrayList<>();
-        result.add(SubscriptionDto.from(subscription));
+    public void 주소_등록_테스트() throws Exception {
+        mvc
+                .perform(put("/api/user").session(session)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(addressDto))
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
-        when(subscriptionService.findSubscriptionByUser(user.getEmail(), pageable)).thenReturn(result);
+    @Test
+    public void 주소_조회_테스트() throws Exception {
+        when(userService.findAddressByUser(user.getEmail())).thenReturn(FindAddressDto.from(user.getAddress()));
 
         mvc
-                .perform(get("/api/subscription").session(session))
+                .perform(get("/api/user").session(session))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("$.*", hasSize(result.size())));
-
+                .andExpect(jsonPath("$.street").value("testStreet"))
+                .andExpect(jsonPath("$.city").value("testCity"))
+                .andExpect(jsonPath("$.zipcode").value("testZipcode"));
     }
 
     private void setMvc() {

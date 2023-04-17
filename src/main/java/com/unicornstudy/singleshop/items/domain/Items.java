@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Items extends BaseTimeEntity {
+public class Items {
 
     @Version
     private Long version;
@@ -32,20 +32,24 @@ public class Items extends BaseTimeEntity {
 
     private Integer quantity;
 
-    public void update(Long id, String name, Integer price, String description, Integer quantity, LocalDateTime modifiedDate) {
+    private LocalDateTime modifiedDate;
+
+    private LocalDateTime createdDate;
+
+    public void update(Long id, String name, Integer price, String description, Integer quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate = LocalDateTime.now();
     }
 
-    public void addQuantity() {
+    public void increaseQuantity() {
         this.quantity += 1;
     }
 
-    public void subtractQuantity() {
+    public void decreaseQuantity() {
         OrderExceptionCheckFactory.checkQuantity(this);
         this.quantity -= 1;
     }

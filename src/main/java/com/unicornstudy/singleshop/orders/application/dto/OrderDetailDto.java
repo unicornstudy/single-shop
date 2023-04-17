@@ -1,22 +1,28 @@
 package com.unicornstudy.singleshop.orders.application.dto;
 
 import com.unicornstudy.singleshop.orders.domain.OrderItem;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
 public class OrderDetailDto {
 
-    private String name;
-    private String description;
-    private Integer price;
+    private final String name;
+    private final String description;
+    private final Integer price;
 
-    public static OrderDetailDto createOrderDetailDto(OrderItem orderItem) {
-        OrderDetailDto orderDetailDto = new OrderDetailDto();
-        orderDetailDto.name = orderItem.getName();
-        orderDetailDto.description = orderItem.getDescription();
-        orderDetailDto.price = orderItem.getPrice();
-        return orderDetailDto;
+    @Builder
+    public OrderDetailDto(String name, String description, Integer price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    public static OrderDetailDto from(OrderItem orderItem) {
+        return OrderDetailDto.builder()
+                .name(orderItem.getName())
+                .description(orderItem.getDescription())
+                .price(orderItem.getPrice())
+                .build();
     }
 }

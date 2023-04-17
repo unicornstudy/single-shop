@@ -38,7 +38,7 @@ public class CartService {
     public List<ReadCartResponseDto> findCartItemListByUser(String userEmail, Pageable pageable) {
         return cartItemRepository.findAllByCartId(validateCart(userEmail).getId(), pageable)
                 .stream()
-                .map(cartItem -> new ReadCartResponseDto(cartItem))
+                .map(cartItem -> ReadCartResponseDto.from(cartItem))
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +47,7 @@ public class CartService {
         return validateCart(userEmail)
                 .getCartItems()
                 .stream()
-                .map(cartItem -> new ReadCartResponseDto(cartItem))
+                .map(cartItem -> ReadCartResponseDto.from(cartItem))
                 .collect(Collectors.toList());
     }
 
