@@ -20,19 +20,18 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems = new ArrayList<>();
 
     private int price;
 
     private int count;
 
-    public Cart addCartItem(CartItem cartItem) {
+    public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
         cartItem.initializeCart(this);
         count++;
         price += cartItem.getItem().getPrice();
-        return this;
     }
 
     public void subtractCartItem(CartItem cartItem) {
@@ -43,7 +42,7 @@ public class Cart {
 
     public static Cart createCart(User user, CartItem cartItem) {
         Cart cart = new Cart();
-        cart.initializeCartItems();
+        cart.updatePriceAndCount();
         cart.addCartItem(cartItem);
         user.initializeCart(cart);
         cart.initializeUser(user);
@@ -54,7 +53,7 @@ public class Cart {
         this.user = user;
     }
 
-    private void initializeCartItems() {
+    private void updatePriceAndCount() {
         this.price = 0;
         this.count = 0;
     }

@@ -23,7 +23,7 @@ public class Orders {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -53,22 +53,22 @@ public class Orders {
         order.initializeUser(user);
         orderItems.forEach(entity -> order.addOrderItem(entity));
         order.initializeDelivery(delivery);
-        order.changeOrderStatus(OrderStatus.ORDER);
-        order.addOrderDate();
-        order.addPayment(payment);
+        order.updateOrderStatus(OrderStatus.ORDER);
+        order.updateOrderDate();
+        order.updatePayment(payment);
 
         return order;
     }
 
-    public void changeOrderStatus(OrderStatus status) {
+    public void updateOrderStatus(OrderStatus status) {
         this.status = status;
     }
 
-    private void addPayment(Payment payment) {
+    private void updatePayment(Payment payment) {
         this.payment = payment;
     }
 
-    private void addOrderDate() {
+    private void updateOrderDate() {
         this.orderDate = LocalDateTime.now();
     }
 

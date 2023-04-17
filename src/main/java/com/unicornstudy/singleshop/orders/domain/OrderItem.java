@@ -34,7 +34,7 @@ public class OrderItem {
     public static OrderItem createOrderItem(Items item) {
         OrderItem orderItem = new OrderItem();
         orderItem.initializeItem(item);
-        orderItem.initializeItemInfo(item);
+        orderItem.updateItemInfo(item);
         return orderItem;
     }
 
@@ -42,7 +42,7 @@ public class OrderItem {
         this.item = item;
     }
 
-    private void initializeItemInfo(Items item) {
+    private void updateItemInfo(Items item) {
         this.name = item.getName();
         this.description = item.getDescription();
         this.price = item.getPrice();

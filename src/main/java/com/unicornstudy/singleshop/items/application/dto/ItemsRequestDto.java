@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +25,7 @@ public class ItemsRequestDto {
                 .price(getPrice())
                 .description(getDescription())
                 .quantity(getQuantity())
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 

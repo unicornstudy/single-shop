@@ -46,7 +46,7 @@ public class OrderService {
     public List<OrderDto> findOrdersByUser(String userEmail, Pageable pageable) {
         return orderRepository.findAllByUserEmail(userEmail, pageable)
                 .stream()
-                .map(orders -> OrderDto.createOrderDto(orders))
+                .map(orders -> OrderDto.from(orders))
                 .collect(Collectors.toList());
     }
 
@@ -54,14 +54,14 @@ public class OrderService {
     public List<OrderDetailDto> findOrderDetailsById(Long id, Pageable pageable) {
         return orderItemRepository.findAllByOrderId(id, pageable)
                 .stream()
-                .map(orderItems -> OrderDetailDto.createOrderDetailDto(orderItems))
+                .map(orderItems -> OrderDetailDto.from(orderItems))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public OrderDto findOrderById(Long id) {
         return orderRepository.findById(id)
-                .map(entity -> OrderDto.createOrderDto(entity))
+                .map(entity -> OrderDto.from(entity))
                 .orElseThrow(() -> new OrderNotFoundException());
     }
 
@@ -102,11 +102,11 @@ public class OrderService {
         order.cancelDelivery();
         changeOrderStatusAndQuantity(order);
 
-        return OrderDto.createOrderDto(order);
+        return OrderDto.from(order);
     }
 
     private void changeOrderStatusAndQuantity(Orders order) {
-        order.changeOrderStatus(OrderStatus.CANCEL);
+        order.updateOrderStatus(OrderStatus.CANCEL);
         for (OrderItem orderItem: order.getOrderItems()) {
             optimisticLockQuantityFacade.addQuantity(orderItem.getItem().getId());
         }

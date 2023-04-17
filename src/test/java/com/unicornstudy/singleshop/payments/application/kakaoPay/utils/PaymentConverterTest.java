@@ -26,7 +26,7 @@ class PaymentConverterTest {
     void setUp() {
         //given
         cartItem = TestSetting.setCartItem(Items.builder().id(1L).name("test").description("test").price(2).quantity(3).build());
-        carts.add(new ReadCartResponseDto(cartItem));
+        carts.add(ReadCartResponseDto.from(cartItem));
         role = Role.SUBSCRIBER;
     }
 

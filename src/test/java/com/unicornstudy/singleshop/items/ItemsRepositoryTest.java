@@ -126,7 +126,7 @@ class ItemsRepositoryTest {
         Integer updateQuantity = 5;
         LocalDateTime now = LocalDateTime.now();
 
-        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity, now);
+        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity);
 
         assertThat(items.getName()).isEqualTo(updateName);
         assertThat(items.getPrice()).isEqualTo(updatePrice);
