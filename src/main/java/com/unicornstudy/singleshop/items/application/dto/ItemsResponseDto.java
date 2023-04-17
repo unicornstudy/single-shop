@@ -33,6 +33,7 @@ public class ItemsResponseDto {
                 .id(items.getId())
                 .name(items.getName())
                 .price(items.getPrice())
+                .quantity(items.getQuantity())
                 .description(items.getDescription())
                 .createdDate(items.getCreatedDate())
                 .modifiedDate(items.getModifiedDate())
