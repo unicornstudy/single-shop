@@ -1,6 +1,10 @@
 package com.unicornstudy.singleshop.subscription;
 
 import com.unicornstudy.singleshop.config.TestSetting;
+import com.unicornstudy.singleshop.exception.subscription.AlreadySubscriptionException;
+import com.unicornstudy.singleshop.exception.subscription.CanceledSubscriptionException;
+import com.unicornstudy.singleshop.exception.subscription.NotCanceledSubscriptionException;
+import com.unicornstudy.singleshop.exception.subscription.ReSubscriptionException;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.subscription.application.SubscriptionService;
 import com.unicornstudy.singleshop.subscription.application.dto.SubscriptionDto;
@@ -23,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -75,6 +80,16 @@ public class SubscriptionServiceTest {
         assertThat(user.getRole()).isEqualTo(Role.SUBSCRIBER);
     }
 
+    @DisplayName("일반 사용자가 아닌 경우 구독을 진행할 수 없다.")
+    @Test
+    void 구독_예외_테스트() {
+        user.updateRole(Role.SUBSCRIBER);
+        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
+
+        assertThatThrownBy(() -> subscriptionService.subscribe(user.getEmail(), payment))
+                .isInstanceOf(AlreadySubscriptionException.class);
+    }
+
     @Test
     @DisplayName("사용자가 구독 취소 요청시 바로 구독 취소 되지 않고 28일까지 기다리기 위해 취소 예약이 되는지 확인하는 테스트")
     void 구독_취소_예약_테스트() {
@@ -86,6 +101,15 @@ public class SubscriptionServiceTest {
         assertThat(user.getRole()).isEqualTo(Role.CANCEL_SUBSCRIBER);
     }
 
+    @DisplayName("구독자가 아닌 사용자는 구독 취소 예약을 할 수 없다.")
+    @Test
+    void 구독_취소_예약_예외_테스트() {
+        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
+
+        assertThatThrownBy(() -> subscriptionService.reserveCancelSubscription(user.getEmail()))
+                .isInstanceOf(CanceledSubscriptionException.class);
+    }
+
     @Test
     @DisplayName("사용자가 요청한 구독취소가 28일날 자동으로 취소가 되는지 확인하는 테스트")
     void 구독_취소_테스트() {
@@ -95,5 +119,14 @@ public class SubscriptionServiceTest {
         subscriptionService.cancelSubscription(user.getEmail());
 
         assertThat(user.getRole()).isEqualTo(Role.USER);
+    }
+
+    @DisplayName("구독 취소 예약자가 아닌 사용자는 구독 취소를 할 수 없다.")
+    @Test
+    void 구독_취소_예외_테스트() {
+        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.ofNullable(user));
+
+        assertThatThrownBy(() -> subscriptionService.cancelSubscription(user.getEmail()))
+                .isInstanceOf(NotCanceledSubscriptionException.class);
     }
 }

@@ -35,6 +35,7 @@ public class SubscriptionService {
     @Transactional
     public void subscribe(String userEmail, Payment payment) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new SessionExpiredException());
+        SubscriptionExceptionCheckFactory.checkSubscription(user);
         updateUserRoleAndSid(user, payment);
         Subscription subscription = Subscription.createSubscription(user, payment);
         subscriptionRepository.save(subscription);
@@ -74,6 +75,7 @@ public class SubscriptionService {
     @Transactional
     public void cancelSubscription(String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new SessionExpiredException());
+        SubscriptionExceptionCheckFactory.checkReservedCancelSubscription(user);
         user.updateSid(null);
         user.updateRole(Role.USER);
     }

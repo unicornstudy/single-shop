@@ -156,11 +156,7 @@ public class CartControllerTest {
                         .characterEncoding("utf-8")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andDo(document("장바구니_추가기능",
-                        preprocessRequest(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("itemId")
-                        )));
+                .andDo(document("장바구니_추가기능"));
     }
 
     @Test

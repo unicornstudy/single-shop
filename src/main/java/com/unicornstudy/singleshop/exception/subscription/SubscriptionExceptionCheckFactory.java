@@ -23,4 +23,10 @@ public class SubscriptionExceptionCheckFactory {
             throw new ReSubscriptionException();
         }
     }
+
+    public static void checkReservedCancelSubscription(User user) {
+        if (!UserRoleValidator.isCancelSubscriber(user.getRole())) {
+            throw new NotCanceledSubscriptionException();
+        }
+    }
 }

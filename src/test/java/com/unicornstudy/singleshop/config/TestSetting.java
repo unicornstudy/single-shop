@@ -52,6 +52,11 @@ public class TestSetting {
         return cartItem;
     }
 
+    public static CartItem setCartItemWithoutId(Items item) {
+        CartItem cartItem = CartItem.createCartItem(item);
+        return cartItem;
+    }
+
     public static Pageable setPageable() {
         return PageRequest.of(0, 10, Sort.by("id").descending());
     }

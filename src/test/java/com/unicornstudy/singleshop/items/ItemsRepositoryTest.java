@@ -1,148 +1,134 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.config.TestSetting;
+import com.unicornstudy.singleshop.exception.ErrorCode;
+import com.unicornstudy.singleshop.exception.items.ItemsException;
 import com.unicornstudy.singleshop.items.domain.Items;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 class ItemsRepositoryTest {
 
     @Autowired
-    ItemsRepository itemsRepository;
+    private ItemsRepository itemsRepository;
+
+    private Items item;
 
     @BeforeEach
     void setUp() {
-        String name1 = "상품1";
-        Integer price1 = 1;
-        String description1 = "설명1";
-        Integer quantity1 = 1;
+        item = TestSetting.setItem();
 
-        itemsRepository.save(Items.builder()
-                .name(name1)
-                .price(price1)
-                .description(description1)
-                .quantity(quantity1)
-                .build());
+        itemsRepository.save(item);
     }
 
     @AfterEach
-    void cleanup() {
+    void delete() {
         itemsRepository.deleteAll();
     }
 
+    @DisplayName("상품 저장 테스트")
     @Test
-    void 상품저장테스트() {
-        String name2 = "상품2";
-        Integer price2 = 2;
-        String description2 = "설명2";
-        Integer quantity2 = 2;
+    void save_item_test() {
+        Items item2 = TestSetting.setItem();
 
-        itemsRepository.save(Items.builder()
-                .name(name2)
-                .price(price2)
-                .description(description2)
-                .quantity(quantity2)
-                .build());
+        itemsRepository.save(item2);
 
-        List<Items> itemsList = itemsRepository.findAll();
-        Items items = itemsList.get(1);
+        Items foundItem = itemsRepository.findById(item2.getId())
+                .orElseThrow(() -> new ItemsException(ErrorCode.BAD_REQUEST_ITEMS_READ));
 
-        assertThat(items.getName()).isEqualTo(name2);
-        assertThat(items.getPrice()).isEqualTo(price2);
-        assertThat(items.getDescription()).isEqualTo(description2);
-        assertThat(items.getQuantity()).isEqualTo(quantity2);
+        assertThat(foundItem).isNotNull();
+        assertThat(foundItem.getId()).isEqualTo(item2.getId());
+        assertThat(foundItem.getName()).isEqualTo(item2.getName());
     }
 
+    @DisplayName("상품 저장 시 생성 날짜 주입 테스트")
     @Test
-    void 상품조회테스트() {
-        String name1 = "상품1";
-        Integer price1 = 1;
-        String description1 = "설명1";
-        Integer quantity1 = 1;
+    void save_item_withCreatedDate_test() {
+        Items item2 = TestSetting.setItem();
 
-        List<Items> itemsList = itemsRepository.findAll();
-        Items items = itemsList.get(0);
+        itemsRepository.save(item2);
 
-        assertThat(items.getName()).isEqualTo(name1);
-        assertThat(items.getPrice()).isEqualTo(price1);
-        assertThat(items.getDescription()).isEqualTo(description1);
-        assertThat(items.getQuantity()).isEqualTo(quantity1);
+        Items foundItem = itemsRepository.findById(item2.getId())
+                .orElseThrow(() -> new ItemsException(ErrorCode.BAD_REQUEST_ITEMS_READ));
+
+        assertThat(foundItem.getCreatedDate()).isNotNull();
+        assertThat(foundItem.getCreatedDate()).isBeforeOrEqualTo(LocalDateTime.now());
     }
 
+    @DisplayName("Id를 통한 상품 조회 테스트")
     @Test
-    void 상품조회리스트테스트() {
-        String name1 = "상품1";
-        Integer price1 = 1;
-        String description1 = "설명1";
-        Integer quantity1 = 1;
+    void findById_item_test() {
+        Items foundItem = itemsRepository.findById(item.getId())
+                .orElseThrow(() -> new ItemsException(ErrorCode.BAD_REQUEST_ITEMS_READ));
 
-        String name2 = "상품2";
-        Integer price2 = 2;
-        String description2 = "설명2";
-        Integer quantity2 = 2;
-
-        itemsRepository.save(Items.builder()
-                .name(name2)
-                .price(price2)
-                .description(description2)
-                .quantity(quantity2)
-                .build());
-
-        List<Items> itemsList = itemsRepository.findAll();
-        Items items1 = itemsList.get(0);
-        Items items2 = itemsList.get(1);
-
-        assertThat(items1.getName()).isEqualTo(name1);
-        assertThat(items1.getPrice()).isEqualTo(price1);
-        assertThat(items1.getDescription()).isEqualTo(description1);
-        assertThat(items1.getQuantity()).isEqualTo(quantity1);
-
-        assertThat(items2.getName()).isEqualTo(name2);
-        assertThat(items2.getPrice()).isEqualTo(price2);
-        assertThat(items2.getDescription()).isEqualTo(description2);
-        assertThat(items2.getQuantity()).isEqualTo(quantity2);
+        assertThat(foundItem).isNotNull();
+        assertThat(foundItem.getId()).isEqualTo(item.getId());
+        assertThat(foundItem.getName()).isEqualTo(item.getName());
     }
 
+    @DisplayName("전체 상품 조회 테스트")
     @Test
-    void 상품수정테스트() {
-        List<Items> itemsList = itemsRepository.findAll();
-        Items items = itemsList.get(0);
+    void findAll_test() {
+        Items item2 = TestSetting.setItem();
 
-        String updateName = "상품";
-        Integer updatePrice = 5000;
-        String updateDescription = "설명";
-        Integer updateQuantity = 5;
-        LocalDateTime now = LocalDateTime.now();
+        itemsRepository.save(item2);
 
-        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity, now);
+        List<Items> items = itemsRepository.findAll();
+        Items foundItem = items.get(0);
+        Items foundItem2 = items.get(1);
 
-        assertThat(items.getName()).isEqualTo(updateName);
-        assertThat(items.getPrice()).isEqualTo(updatePrice);
-        assertThat(items.getDescription()).isEqualTo(updateDescription);
-        assertThat(items.getQuantity()).isEqualTo(updateQuantity);
-        assertThat(items.getModifiedDate()).isEqualTo(now);
+        assertThat(items.size()).isEqualTo(2);
+        assertThat(foundItem).isNotNull();
+        assertThat(foundItem.getId()).isEqualTo(item.getId());
+
+        assertThat(foundItem2).isNotNull();
+        assertThat(foundItem2.getId()).isEqualTo(item2.getId());
     }
 
+    @DisplayName("상품 데이터 수정 테스트")
     @Test
-    void 상품삭제테스트() {
-        List<Items> itemsList = itemsRepository.findAll();
-        Items items = itemsList.get(0);
+    void update_item_test() {
+        Items foundItem = itemsRepository.findById(item.getId())
+                .orElseThrow(() -> new ItemsException(ErrorCode.BAD_REQUEST_ITEMS_READ));
 
-        itemsRepository.deleteById(items.getId());
+        String updatedName = "Test2";
+        Integer updatedPrice = 3000;
+        String updatedDescription = "Test2";
+        Integer updatedQuantity = 30;
 
-        assertThat(itemsRepository.findById(items.getId())).isNotPresent();
+        foundItem.update(foundItem.getId(), updatedName,
+                updatedPrice, updatedDescription, updatedQuantity, LocalDateTime.now());
+
+        assertThat(foundItem).isNotNull();
+        assertThat(foundItem.getId()).isEqualTo(foundItem.getId());
+        assertThat(foundItem.getName()).isEqualTo(updatedName);
+        assertThat(foundItem.getPrice()).isEqualTo(updatedPrice);
+        assertThat(foundItem.getDescription()).isEqualTo(updatedDescription);
+        assertThat(foundItem.getQuantity()).isEqualTo(updatedQuantity);
+        assertThat(foundItem.getModifiedDate()).isBeforeOrEqualTo(LocalDateTime.now());
     }
 
+    @DisplayName("상품 데이터 삭제 테스트")
+    @Test
+    void delete_item_test() {
+        Items foundItem = itemsRepository.findById(item.getId())
+                .orElseThrow(() -> new ItemsException(ErrorCode.BAD_REQUEST_ITEMS_READ));
+
+        itemsRepository.delete(foundItem);
+
+        assertThat(itemsRepository.findById(item.getId())).isNotPresent();
+    }
 }
