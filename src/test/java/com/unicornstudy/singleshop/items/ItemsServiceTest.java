@@ -1,7 +1,7 @@
 package com.unicornstudy.singleshop.items;
 
-import com.unicornstudy.singleshop.items.application.ItemsService;
-import com.unicornstudy.singleshop.items.application.dto.ItemsRequestDto;
+import com.unicornstudy.singleshop.items.command.application.ItemsService;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsRequestDto;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
 import org.junit.jupiter.api.AfterEach;

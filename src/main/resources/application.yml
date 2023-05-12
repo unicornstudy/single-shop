@@ -22,3 +22,11 @@ spring:
     property-naming-strategy: SNAKE_CASE
 admin-key: "${kakaoAdminKey}"
 kakao-base-url: https://kapi.kakao.com/v1/payment
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch:
+            client:
+              WIRE: TRACE

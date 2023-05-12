@@ -4,7 +4,9 @@ import com.unicornstudy.singleshop.carts.domain.Cart;
 import com.unicornstudy.singleshop.carts.domain.CartItem;
 import com.unicornstudy.singleshop.delivery.domain.Address;
 import com.unicornstudy.singleshop.delivery.domain.Delivery;
+import com.unicornstudy.singleshop.items.domain.ChildCategory;
 import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.domain.ParentCategory;
 import com.unicornstudy.singleshop.orders.domain.OrderItem;
 import com.unicornstudy.singleshop.orders.domain.Orders;
 import com.unicornstudy.singleshop.payments.domain.Payment;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,10 @@ public class TestSetting {
                 .price(10)
                 .description("description")
                 .quantity(1)
+                .createdDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .childCategory(ChildCategory.KIMCHI)
+                .parentCategory(ParentCategory.FOOD)
                 .build();
     }
 

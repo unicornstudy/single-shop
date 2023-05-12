@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.items.application.dto;
+package com.unicornstudy.singleshop.items.command.application.dto;
 
 import com.unicornstudy.singleshop.items.domain.Items;
 import lombok.Builder;

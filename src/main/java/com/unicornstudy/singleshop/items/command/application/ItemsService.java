@@ -1,10 +1,14 @@
-package com.unicornstudy.singleshop.items.application;
+package com.unicornstudy.singleshop.items.command.application;
 
-import com.unicornstudy.singleshop.items.application.dto.ItemsRequestDto;
-import com.unicornstudy.singleshop.items.application.dto.ItemsResponseDto;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsRequestDto;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsResponseDto;
+import com.unicornstudy.singleshop.items.domain.ChildCategory;
 import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.domain.ParentCategory;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
+import com.unicornstudy.singleshop.items.query.domain.ItemsIndex;
+import com.unicornstudy.singleshop.items.query.domain.repository.ItemsSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import static com.unicornstudy.singleshop.exception.ErrorCode.*;
 public class ItemsService {
 
     private final ItemsRepository itemsRepository;
+    private final ItemsSearchRepository itemsSearchRepository;
 
     @Transactional(readOnly = true)
     public ItemsResponseDto findById(Long id) {
@@ -37,7 +42,7 @@ public class ItemsService {
     @Transactional
     public ItemsResponseDto save(ItemsRequestDto requestDto) {
         Items items = itemsRepository.save(requestDto.toEntity());
-
+        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(items));
         return ItemsResponseDto.from(items);
     }
 
@@ -46,17 +51,17 @@ public class ItemsService {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
 
         items.update(id, requestDto.getName(), requestDto.getPrice(),
-                requestDto.getDescription(), requestDto.getQuantity());
-
+                requestDto.getDescription(), requestDto.getQuantity(),
+                ParentCategory.valueOf(requestDto.getParentCategory()), ChildCategory.valueOf(requestDto.getChildCategory()));
+        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(items));
         return ItemsResponseDto.from(items);
     }
 
     @Transactional
     public Long delete(Long id) {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
-
         itemsRepository.delete(items);
-
+        itemsSearchRepository.deleteById(items.getId());
         return id;
     }
 
@@ -64,11 +69,13 @@ public class ItemsService {
     public void subtractQuantity(Long id) {
         Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         item.decreaseQuantity();
+        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(item));
     }
 
     @Transactional
     public void addQuantity(Long id) {
         Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         item.increaseQuantity();
+        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(item));
     }
 }

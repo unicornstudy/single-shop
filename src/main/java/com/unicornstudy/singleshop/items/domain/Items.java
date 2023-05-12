@@ -36,13 +36,21 @@ public class Items {
 
     private LocalDateTime createdDate;
 
-    public void update(Long id, String name, Integer price, String description, Integer quantity) {
+    @Enumerated(EnumType.STRING)
+    private ParentCategory parentCategory;
+
+    @Enumerated(EnumType.STRING)
+    private ChildCategory childCategory;
+
+    public void update(Long id, String name, Integer price, String description, Integer quantity, ParentCategory parentCategory, ChildCategory childCategory) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
         this.modifiedDate = LocalDateTime.now();
+        this.parentCategory = parentCategory;
+        this.childCategory = childCategory;
     }
 
     public void increaseQuantity() {

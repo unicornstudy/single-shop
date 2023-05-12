@@ -2,8 +2,8 @@ package com.unicornstudy.singleshop.items;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicornstudy.singleshop.config.TestSetting;
-import com.unicornstudy.singleshop.items.application.ItemsService;
-import com.unicornstudy.singleshop.items.application.dto.ItemsRequestDto;
+import com.unicornstudy.singleshop.items.command.application.ItemsService;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsRequestDto;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +14,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

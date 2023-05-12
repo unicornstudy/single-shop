@@ -1,6 +1,8 @@
 package com.unicornstudy.singleshop.items;
 
+import com.unicornstudy.singleshop.items.domain.ChildCategory;
 import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.domain.ParentCategory;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -125,8 +127,11 @@ class ItemsRepositoryTest {
         String updateDescription = "설명";
         Integer updateQuantity = 5;
         LocalDateTime now = LocalDateTime.now();
+        ParentCategory parentCategory = ParentCategory.FOOD;
+        ChildCategory childCategory = ChildCategory.KIMCHI;
 
-        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity);
+
+        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity, parentCategory, childCategory);
 
         assertThat(items.getName()).isEqualTo(updateName);
         assertThat(items.getPrice()).isEqualTo(updatePrice);
