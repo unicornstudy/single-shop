@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.items.application;
+package com.unicornstudy.singleshop.items.command.application;
 
 import com.unicornstudy.singleshop.exception.ErrorCode;
 import com.unicornstudy.singleshop.exception.items.ItemsException;

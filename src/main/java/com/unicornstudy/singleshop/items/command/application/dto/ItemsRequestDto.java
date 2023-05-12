@@ -1,10 +1,9 @@
-package com.unicornstudy.singleshop.items.application.dto;
+package com.unicornstudy.singleshop.items.command.application.dto;
 
+import com.unicornstudy.singleshop.items.domain.ChildCategory;
 import com.unicornstudy.singleshop.items.domain.Items;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.unicornstudy.singleshop.items.domain.ParentCategory;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +17,8 @@ public class ItemsRequestDto {
     private Integer price;
     private String description;
     private Integer quantity;
+    private String parentCategory;
+    private String childCategory;
 
     public Items toEntity() {
         return Items.builder()
@@ -26,6 +27,9 @@ public class ItemsRequestDto {
                 .description(getDescription())
                 .quantity(getQuantity())
                 .createdDate(LocalDateTime.now())
+                .modifiedDate(LocalDateTime.now())
+                .parentCategory(ParentCategory.valueOf(getParentCategory()))
+                .childCategory(ChildCategory.valueOf(getChildCategory()))
                 .build();
     }
 

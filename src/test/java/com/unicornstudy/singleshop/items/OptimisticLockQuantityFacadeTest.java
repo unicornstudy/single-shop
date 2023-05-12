@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.items;
 
-import com.unicornstudy.singleshop.items.application.OptimisticLockQuantityFacade;
+import com.unicornstudy.singleshop.items.command.application.OptimisticLockQuantityFacade;
 import com.unicornstudy.singleshop.items.domain.Items;
 import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
 import com.unicornstudy.singleshop.exception.items.ItemsException;

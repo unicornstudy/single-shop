@@ -1,17 +1,12 @@
-package com.unicornstudy.singleshop.items.presentation;
+package com.unicornstudy.singleshop.items.command.presentation;
 
-import com.unicornstudy.singleshop.items.application.ItemsService;
-import com.unicornstudy.singleshop.items.application.dto.ItemsRequestDto;
-import com.unicornstudy.singleshop.items.application.dto.ItemsResponseDto;
+import com.unicornstudy.singleshop.items.command.application.ItemsService;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsRequestDto;
+import com.unicornstudy.singleshop.items.command.application.dto.ItemsResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,16 +14,6 @@ import java.util.List;
 public class ItemsController {
 
     private final ItemsService itemService;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemsResponseDto> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(itemService.findById(id), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ItemsResponseDto>> findByAll(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new ResponseEntity<>(itemService.findAll(pageable), HttpStatus.OK);
-    }
 
     @PostMapping
     public ResponseEntity<ItemsResponseDto> save(@RequestBody ItemsRequestDto requestDto) {

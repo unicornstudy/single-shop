@@ -7,7 +7,7 @@ import com.unicornstudy.singleshop.exception.carts.CartNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.SessionExpiredException;
 import com.unicornstudy.singleshop.delivery.domain.Delivery;
 import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.application.OptimisticLockQuantityFacade;
+import com.unicornstudy.singleshop.items.command.application.OptimisticLockQuantityFacade;
 import com.unicornstudy.singleshop.orders.domain.OrderStatus;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.orders.application.dto.OrderDetailDto;

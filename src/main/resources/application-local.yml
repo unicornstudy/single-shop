@@ -18,3 +18,4 @@ domain: http://localhost:8080
 subscription-approve-url: http://localhost:8080/api/payments/kakaopay/subscription/approve
 subscription-cancel-url: http://localhost:8080/api/payments/kakaopay/subscription/cancel
 subscription-fail-url: http://localhost:8080/api/payments/kakaopay/subscription/fail
+elasticsearch-hostAndPort: localhost:9200

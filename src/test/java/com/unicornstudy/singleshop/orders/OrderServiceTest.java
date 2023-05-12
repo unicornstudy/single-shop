@@ -10,7 +10,7 @@ import com.unicornstudy.singleshop.delivery.domain.Delivery;
 import com.unicornstudy.singleshop.delivery.domain.DeliveryStatus;
 import com.unicornstudy.singleshop.exception.orders.*;
 import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.application.OptimisticLockQuantityFacade;
+import com.unicornstudy.singleshop.items.command.application.OptimisticLockQuantityFacade;
 import com.unicornstudy.singleshop.orders.application.OrderService;
 import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
 import com.unicornstudy.singleshop.orders.domain.*;
