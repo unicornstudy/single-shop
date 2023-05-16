@@ -1,3 +1,14 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: create
+  datasource:
+    username: "${mySQLId}"
+    password: "${mySQLPw}"
+    url: jdbc:mysql://localhost:3307/unicorn?serverTimezone=UTC&characterEncoding=UTF-8
 cid: "${kakaoPayTestCid}"
 subscription-cid: "${kakaoPayTestSubscriptionCid}"
 approve-url: http://localhost:8080/api/payments/kakaopay/approve

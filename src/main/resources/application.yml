@@ -2,23 +2,11 @@ spring:
   profiles:
     active: local
     include: oauth
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      format_sql: true
-      ddl-auto: create
-  datasource:
-    username: test
-    password: 1234
-    url: jdbc:mysql://localhost:3307/unicorn?serverTimezone=UTC&characterEncoding=UTF-8
   batch:
     jdbc:
       initialize-schema: ALWAYS
     job:
       enabled: false
       names: ${job.name:NONE}
-  jackson:
-    property-naming-strategy: SNAKE_CASE
 admin-key: "${kakaoAdminKey}"
 kakao-base-url: https://kapi.kakao.com/v1/payment
