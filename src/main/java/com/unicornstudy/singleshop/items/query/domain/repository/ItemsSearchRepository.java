@@ -14,5 +14,5 @@ public interface ItemsSearchRepository extends ElasticsearchRepository<ItemsInde
             "{\"range\": {\"price\": {\"gte\": ?1,\"lte\": ?2}}}," +
             "{\"wildcard\": {\"parentCategory\": \"*?3*\"}}," +
             "{\"wildcard\": {\"childCategory\": \"*?4*\"}}]}}")
-    List<ItemsIndex> findItems(String name, Integer price1, Integer price2, String parentCategory, String childCategory, Pageable pageable);
+    List<ItemsIndex> searchItemsByNamePriceAndCategory(String name, Integer price1, Integer price2, String parentCategory, String childCategory, Pageable pageable);
 }
