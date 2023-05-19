@@ -20,14 +20,14 @@ public class ItemsSearchController {
     private final ItemsSearchService itemsSearchService;
 
     @GetMapping("/{name}")
-    public ResponseEntity<List<ItemsSearchDto>> findById(@PathVariable String name,
-                                                         @RequestParam(value = "price1", defaultValue = "0") int price1,
-                                                         @RequestParam(value= "price2", defaultValue = "2147483647") int price2,
+    public ResponseEntity<List<ItemsSearchDto>> searchItemsByNamePriceAndCategory(@PathVariable String name,
+                                                         @RequestParam(value = "minPrice", defaultValue = "0") int minPrice,
+                                                         @RequestParam(value= "maxPrice", defaultValue = "2147483647") int maxPrice,
                                                          @RequestParam(value = "parentCategory", defaultValue = "") String parentCategory,
                                                          @RequestParam(value = "childCategory", defaultValue = "") String childCategory,
                                                          @PageableDefault(size=10, sort="createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        System.out.println(price1);
-        return new ResponseEntity<>(itemsSearchService.findItems(name, price1, price2, parentCategory, childCategory, pageable), HttpStatus.OK);
+
+        return new ResponseEntity<>(itemsSearchService.searchItemsByNamePriceAndCategory(name, minPrice, maxPrice, parentCategory, childCategory, pageable), HttpStatus.OK);
 
     }
 

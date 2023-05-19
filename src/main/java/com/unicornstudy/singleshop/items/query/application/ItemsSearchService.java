@@ -21,8 +21,8 @@ public class ItemsSearchService {
                 .toList();
     }
 
-    public List<ItemsSearchDto> findItems(String name, int price1, int price2, String parentCategory, String childCategory, Pageable pageable) {
-        return itemsSearchRepository.findItems(name, price1, price2, parentCategory, childCategory, pageable)
+    public List<ItemsSearchDto> searchItemsByNamePriceAndCategory(String name, int price1, int price2, String parentCategory, String childCategory, Pageable pageable) {
+        return itemsSearchRepository.searchItemsByNamePriceAndCategory(name, price1, price2, parentCategory, childCategory, pageable)
                 .stream()
                 .map(items -> ItemsSearchDto.from(items))
                 .toList();

@@ -23,12 +23,10 @@ import static com.unicornstudy.singleshop.exception.ErrorCode.*;
 public class ItemsService {
 
     private final ItemsRepository itemsRepository;
-    private final ItemsSearchRepository itemsSearchRepository;
 
     @Transactional(readOnly = true)
     public ItemsResponseDto findById(Long id) {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
-
         return ItemsResponseDto.from(items);
     }
 
@@ -42,7 +40,6 @@ public class ItemsService {
     @Transactional
     public ItemsResponseDto save(ItemsRequestDto requestDto) {
         Items items = itemsRepository.save(requestDto.toEntity());
-        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(items));
         return ItemsResponseDto.from(items);
     }
 
@@ -53,7 +50,6 @@ public class ItemsService {
         items.update(id, requestDto.getName(), requestDto.getPrice(),
                 requestDto.getDescription(), requestDto.getQuantity(),
                 ParentCategory.valueOf(requestDto.getParentCategory()), ChildCategory.valueOf(requestDto.getChildCategory()));
-        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(items));
         return ItemsResponseDto.from(items);
     }
 
@@ -61,21 +57,20 @@ public class ItemsService {
     public Long delete(Long id) {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         itemsRepository.delete(items);
-        itemsSearchRepository.deleteById(items.getId());
         return id;
     }
 
     @Transactional
-    public void subtractQuantity(Long id) {
+    public ItemsResponseDto subtractQuantity(Long id) {
         Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         item.decreaseQuantity();
-        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(item));
+        return ItemsResponseDto.from(item);
     }
 
     @Transactional
-    public void addQuantity(Long id) {
+    public ItemsResponseDto addQuantity(Long id) {
         Items item = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         item.increaseQuantity();
-        itemsSearchRepository.save(ItemsIndex.createElasticSearchItems(item));
+        return ItemsResponseDto.from(item);
     }
 }

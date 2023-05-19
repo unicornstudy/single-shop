@@ -9,6 +9,21 @@ spring:
     username: "${mySQLId}"
     password: "${mySQLPw}"
     url: jdbc:mysql://localhost:3307/unicorn?serverTimezone=UTC&characterEncoding=UTF-8
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        retries: 3
+        retry.backoff.ms: 1000
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: com.unicornstudy.singleshop.*
+
 cid: "${kakaoPayTestCid}"
 subscription-cid: "${kakaoPayTestSubscriptionCid}"
 approve-url: http://localhost:8080/api/payments/kakaopay/approve
