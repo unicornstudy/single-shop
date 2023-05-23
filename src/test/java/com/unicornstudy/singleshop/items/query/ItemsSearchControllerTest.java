@@ -89,7 +89,7 @@ public class ItemsSearchControllerTest {
     @Test
     @DisplayName("상품 명, 내용, 가격 조회 테스트")
     void 복합_쿼리_테스트() throws Exception {
-        when(itemsSearchService.findItems(any(String.class), any(Integer.class),
+        when(itemsSearchService.searchItemsByNamePriceAndCategory(any(String.class), any(Integer.class),
                 any(Integer.class), any(String.class), any(String.class), any(Pageable.class))).thenReturn(expected);
 
         mockMvc
