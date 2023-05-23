@@ -61,9 +61,9 @@ public class ItemsSearchServiceTest {
     @Test
     @DisplayName("상품 명, 내용, 가격 조회 테스트")
     void 복합_쿼리_테스트() {
-        when(itemsSearchRepository.findItems(item.getName(), item.getPrice(), item.getPrice(), item.getParentCategory().name(), item.getChildCategory().name(), pageable))
+        when(itemsSearchRepository.searchItemsByNamePriceAndCategory(item.getName(), item.getPrice(), item.getPrice(), item.getParentCategory().name(), item.getChildCategory().name(), pageable))
                 .thenReturn(itemsList);
-        List<ItemsSearchDto> result = itemsSearchService.findItems(item.getName(), item.getPrice(), item.getPrice(), item.getParentCategory().name(), item.getChildCategory().name(), pageable);
+        List<ItemsSearchDto> result = itemsSearchService.searchItemsByNamePriceAndCategory(item.getName(), item.getPrice(), item.getPrice(), item.getParentCategory().name(), item.getChildCategory().name(), pageable);
         List<ItemsSearchDto> expectedDtoList = expected.stream().map(ItemsSearchDto::from).toList();
         assertThat(result.get(0).getId()).isEqualTo(expectedDtoList.get(0).getId());
     }

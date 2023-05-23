@@ -17,7 +17,7 @@ public class CustomItemsSearchRepositoryImpl implements CustomItemsSearchReposit
     private final ElasticSearchService elasticSearchService;
 
     @Override
-    public List<ItemsIndex> findItems(String name, Integer price1, Integer price2, String parentCategory, String childCategory, Pageable pageable) {
+    public List<ItemsIndex> searchItemsByNamePriceAndCategory(String name, Integer price1, Integer price2, String parentCategory, String childCategory, Pageable pageable) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .must(
                         QueryBuilders.boolQuery()
