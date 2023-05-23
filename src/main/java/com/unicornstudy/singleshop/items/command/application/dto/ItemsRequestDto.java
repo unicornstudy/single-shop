@@ -33,4 +33,7 @@ public class ItemsRequestDto {
                 .build();
     }
 
+    public void updateItems(Items items) {
+        items.update(getName(), getPrice(), getDescription(), getQuantity(), ParentCategory.valueOf(getParentCategory()), ChildCategory.valueOf(getChildCategory()));
+    }
 }

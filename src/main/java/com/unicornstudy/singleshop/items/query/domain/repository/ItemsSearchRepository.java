@@ -8,11 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ItemsSearchRepository extends ElasticsearchRepository<ItemsIndex, Long>, CrudRepository<ItemsIndex, Long> {
-
-    @Query("{\"bool\": {\"must\": [{\"bool\": {\"should\": [{\"wildcard\": {\"name\":\"*?0*\"}},{\"wildcard\": {\"description\": \"*?0*\"}}]}}," +
-            "{\"range\": {\"price\": {\"gte\": ?1,\"lte\": ?2}}}," +
-            "{\"wildcard\": {\"parentCategory\": \"*?3*\"}}," +
-            "{\"wildcard\": {\"childCategory\": \"*?4*\"}}]}}")
-    List<ItemsIndex> searchItemsByNamePriceAndCategory(String name, Integer price1, Integer price2, String parentCategory, String childCategory, Pageable pageable);
+public interface ItemsSearchRepository extends ElasticsearchRepository<ItemsIndex, Long>, CrudRepository<ItemsIndex, Long>, CustomItemsSearchRepository {
 }

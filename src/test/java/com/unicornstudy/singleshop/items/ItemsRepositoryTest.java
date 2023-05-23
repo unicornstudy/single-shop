@@ -131,7 +131,7 @@ class ItemsRepositoryTest {
         ChildCategory childCategory = ChildCategory.KIMCHI;
 
 
-        items.update(items.getId(), updateName, updatePrice, updateDescription, updateQuantity, parentCategory, childCategory);
+        items.update(updateName, updatePrice, updateDescription, updateQuantity, parentCategory, childCategory);
 
         assertThat(items.getName()).isEqualTo(updateName);
         assertThat(items.getPrice()).isEqualTo(updatePrice);

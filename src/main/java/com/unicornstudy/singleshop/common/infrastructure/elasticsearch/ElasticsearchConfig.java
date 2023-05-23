@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.items.query.infrastructure;
+package com.unicornstudy.singleshop.common.infrastructure.elasticsearch;
 
 import com.unicornstudy.singleshop.items.query.domain.repository.ItemsSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
