@@ -42,8 +42,7 @@ public class Items {
     @Enumerated(EnumType.STRING)
     private ChildCategory childCategory;
 
-    public void update(Long id, String name, Integer price, String description, Integer quantity, ParentCategory parentCategory, ChildCategory childCategory) {
-        this.id = id;
+    public void update(String name, Integer price, String description, Integer quantity, ParentCategory parentCategory, ChildCategory childCategory) {
         this.name = name;
         this.price = price;
         this.description = description;

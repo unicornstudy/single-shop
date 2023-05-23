@@ -28,7 +28,7 @@ public class ItemsService {
     public ItemsResponseDto findById(Long id) {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         return ItemsResponseDto.from(items);
-    }
+    }   
 
     @Transactional(readOnly = true)
     public List<ItemsResponseDto> findAll(Pageable pageable) {
@@ -46,10 +46,7 @@ public class ItemsService {
     @Transactional
     public ItemsResponseDto update(Long id, ItemsRequestDto requestDto) {
         Items items = itemsRepository.findById(id).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
-
-        items.update(id, requestDto.getName(), requestDto.getPrice(),
-                requestDto.getDescription(), requestDto.getQuantity(),
-                ParentCategory.valueOf(requestDto.getParentCategory()), ChildCategory.valueOf(requestDto.getChildCategory()));
+        requestDto.updateItems(items);
         return ItemsResponseDto.from(items);
     }
 

@@ -16,7 +16,7 @@
 
 
 ## 사용 기술
-![적용기술](https://user-images.githubusercontent.com/79970349/236384005-105bbd1a-1caf-4bfc-8241-23bec87c06ca.png)
+![적용기술](https://github.com/unicornstudy/single-shop/assets/79970349/fe82e671-51e8-4f1b-ada5-dfe02e78d473)
 
 ## WIKI
 해당 프로젝트의 모든 정보는 [WIKI](https://github.com/unicornstudy/single-shop/wiki) 를 통해 참고하실 수 있습니다. 
