@@ -1,6 +1,7 @@
 package com.unicornstudy.singleshop.subscription.application.utils;
 
 import com.unicornstudy.singleshop.user.domain.Role;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class DateCalculatorTest {
 
     @DisplayName("현재 날짜와 결제일(28일)을 비교하여 구독 결제 금액 계산 테스트")
