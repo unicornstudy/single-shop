@@ -35,6 +35,6 @@ public class OrderController {
     @PostMapping("/{id}")
     public ResponseEntity reOrder(@PathVariable Long id, @LoginUser SessionUser user) {
         orderService.reOrder(user.getEmail(), id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

@@ -47,7 +47,7 @@ public class OrderService {
         return orderRepository.findAllByUserEmail(userEmail, pageable)
                 .stream()
                 .map(orders -> OrderDto.from(orders))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -55,7 +55,7 @@ public class OrderService {
         return orderItemRepository.findAllByOrderId(id, pageable)
                 .stream()
                 .map(orderItems -> OrderDetailDto.from(orderItems))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional(readOnly = true)

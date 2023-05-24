@@ -5,21 +5,21 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class FindAddressDto {
+public class AddressResponseDto {
 
     private final String street;
     private final String city;
     private final String zipcode;
 
     @Builder
-    public FindAddressDto(String street, String city, String zipcode) {
+    public AddressResponseDto(String street, String city, String zipcode) {
         this.street = street;
         this.city = city;
         this.zipcode = zipcode;
     }
 
-    public static FindAddressDto from(Address address) {
-        return FindAddressDto.builder()
+    public static AddressResponseDto from(Address address) {
+        return AddressResponseDto.builder()
                 .street(address.getStreet())
                 .city(address.getCity())
                 .zipcode(address.getZipcode())

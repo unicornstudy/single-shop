@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ReadCartResponseDto {
+public class CartResponseDto {
 
     private final Long cartItemId;
     private final String itemName;
@@ -14,7 +14,7 @@ public class ReadCartResponseDto {
     private final Integer quantity;
 
     @Builder
-    public ReadCartResponseDto(Long cartItemId, String itemName, Integer price, String description, Integer quantity) {
+    public CartResponseDto(Long cartItemId, String itemName, Integer price, String description, Integer quantity) {
         this.cartItemId = cartItemId;
         this.itemName = itemName;
         this.price = price;
@@ -22,8 +22,8 @@ public class ReadCartResponseDto {
         this.quantity = quantity;
     }
 
-    public static ReadCartResponseDto from(CartItem cartItem) {
-        return ReadCartResponseDto.builder()
+    public static CartResponseDto from(CartItem cartItem) {
+        return CartResponseDto.builder()
                 .cartItemId(cartItem.getId())
                 .itemName(cartItem.getItem().getName())
                 .price(cartItem.getItem().getPrice())

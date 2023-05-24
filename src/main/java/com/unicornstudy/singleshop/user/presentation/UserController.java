@@ -3,8 +3,8 @@ package com.unicornstudy.singleshop.user.presentation;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.user.application.UserService;
-import com.unicornstudy.singleshop.user.application.dto.FindAddressDto;
-import com.unicornstudy.singleshop.user.application.dto.UpdateAddressDto;
+import com.unicornstudy.singleshop.user.application.dto.AddressResponseDto;
+import com.unicornstudy.singleshop.user.application.dto.AddressRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +19,12 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping
-    public ResponseEntity updateAddress(@LoginUser SessionUser user, @RequestBody @Valid UpdateAddressDto updateAddressDto) {
-        userService.updateAddress(user.getEmail(), updateAddressDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<AddressResponseDto> updateAddress(@LoginUser SessionUser user, @RequestBody @Valid AddressRequestDto addressRequestDto) {
+        return new ResponseEntity<>(userService.updateAddress(user.getEmail(), addressRequestDto), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<FindAddressDto> findAddressByUser(@LoginUser SessionUser user) {
+    public ResponseEntity<AddressResponseDto> findAddressByUser(@LoginUser SessionUser user) {
         return new ResponseEntity<>(userService.findAddressByUser(user.getEmail()), HttpStatus.OK);
     }
 }
