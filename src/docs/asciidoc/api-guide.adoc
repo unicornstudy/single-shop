@@ -1,0 +1,132 @@
+= Single-shop API guide
+Andy Wilkinson;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+[[overview_http_verbs]]
+== HTTP Methods
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PUT`
+| Used to update an existing resource
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview_http_status_codes]]
+== HTTP status codes
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully.
+The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed.
+The response body will include an error providing further information
+
+| `401 Unauthorized`
+| The request has not been applied because it lacks valid authentication credentials for the target resource.
+
+| `403 Forbidden`
+| The server understood the request but refuses to authorize it.
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+== Items API
+
+=== 1. CREATE Items
+
+==== 상품생성
+
+`*_1. Success_*`
+
+**request-fields**
+
+include::{snippets}/items/create/successful/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/successful/http-response.adoc[]
+
+---
+
+`*_2. Fail_*`
+
+**request-fields**
+include::{snippets}/items/create/failure/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/http-response.adoc[]
+
+---
+
+==== 상품변경
+
+`*_1. Success_*`
+
+**request-fields**
+include::{snippets}/items/update/successful/request-fields.adoc[]
+
+**Example response**
+include::{snippets}/items/update/successful/http-response.adoc[]
+
+---
+
+`*_2. Fail_*`
+
+**request-fields**
+include::{snippets}/items/update/successful/request-fields.adoc[]
+
+**Example response**
+include::{snippets}/items/update/failure/http-response.adoc[]
+
+NOTE: 요청 본문의 필드 값에 대한 유효성을 지키지 않을 경우 create 실패 응답과 동일합니다.
+
+==== 상품삭제
+
+`*_1. Success_*`
+
+**Example response**
+include::{snippets}/items/delete/successful/http-response.adoc[]
+
+---
+
+`*_2. Fail_*`
+
+**Example response**
+include::{snippets}/items/delete/failure/http-response.adoc[]

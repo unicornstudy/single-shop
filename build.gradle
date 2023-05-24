@@ -10,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	asciidoctorExtensions
+	asciidoctorExt
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -41,44 +41,44 @@ dependencies {
 	testImplementation 'org.springframework.batch:spring-batch-test'
 	testImplementation "org.testcontainers:junit-jupiter:1.17.2"
 	testImplementation "org.testcontainers:mysql:1.17.2"
-
-	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
-}
-
-tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
 }
 
 ext {
 	snippetsDir = file('build/generated-snippets')
 }
 
-bootJar {
-	dependsOn asciidoctor
-	copy {
-		from "${asciidoctor.outputDir}"
-		into 'BOOT-INF/classes/static/docs'
-	}
+test {
+	outputs.dir snippetsDir
 }
 
 asciidoctor {
-	dependsOn test
+	configurations 'asciidoctorExt'
+	baseDirFollowsSourceFile()
 	inputs.dir snippetsDir
+	dependsOn test
 }
 
 asciidoctor.doFirst {
 	delete file('src/main/resources/static/docs')
 }
 
-task copyDocument(type: Copy) {
+task createDocument(type: Copy) {
 	dependsOn asciidoctor
 	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
+	into file("src/main/resources/static")
 }
 
-build {
-	dependsOn copyDocument
+bootJar {
+	dependsOn createDocument
+	from ("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
 }
