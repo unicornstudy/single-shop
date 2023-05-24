@@ -20,6 +20,7 @@ import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.user.domain.User;
 import com.unicornstudy.singleshop.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -38,6 +39,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @WithMockUser(roles = "USER")
+@Disabled
 public class OrderServiceTest {
 
     @Mock

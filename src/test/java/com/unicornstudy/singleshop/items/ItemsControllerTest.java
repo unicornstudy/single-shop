@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -154,7 +153,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/name",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -191,7 +190,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/price/minus",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -226,7 +225,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/price/null",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -260,7 +259,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/description",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -294,7 +293,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/quantity/null",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -330,7 +329,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/zero",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -365,7 +364,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/parentCategory/null",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -401,7 +400,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/parentCategory/zero",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -436,7 +435,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/childCategory/null",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),
@@ -472,7 +471,7 @@ public class ItemsControllerTest {
                         .with(csrf().asHeader()))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andDo(document("items/create/failure",
+                .andDo(document("items/create/failure/childCategory/zero",
                         requestFields(
                                 fieldWithPath("name").description("Name of the item"),
                                 fieldWithPath("description").description("Description of the item"),

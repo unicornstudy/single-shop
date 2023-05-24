@@ -4,7 +4,7 @@ import com.unicornstudy.singleshop.carts.domain.Cart;
 import com.unicornstudy.singleshop.carts.domain.CartItem;
 import com.unicornstudy.singleshop.carts.domain.repository.CartItemRepository;
 import com.unicornstudy.singleshop.carts.domain.repository.CartRepository;
-import com.unicornstudy.singleshop.carts.application.dto.ReadCartResponseDto;
+import com.unicornstudy.singleshop.carts.application.dto.CartResponseDto;
 import com.unicornstudy.singleshop.exception.carts.CartItemNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.CartNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.SessionExpiredException;
@@ -35,20 +35,20 @@ public class CartService {
     private final ItemsRepository itemsRepository;
 
     @Transactional(readOnly = true)
-    public List<ReadCartResponseDto> findCartItemListByUser(String userEmail, Pageable pageable) {
+    public List<CartResponseDto> findCartItemListByUser(String userEmail, Pageable pageable) {
         return cartItemRepository.findAllByCartId(validateCart(userEmail).getId(), pageable)
                 .stream()
-                .map(cartItem -> ReadCartResponseDto.from(cartItem))
-                .collect(Collectors.toList());
+                .map(cartItem -> CartResponseDto.from(cartItem))
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<ReadCartResponseDto> findAllCartItemListByUser(String userEmail) {
+    public List<CartResponseDto> findAllCartItemListByUser(String userEmail) {
         return validateCart(userEmail)
                 .getCartItems()
                 .stream()
-                .map(cartItem -> ReadCartResponseDto.from(cartItem))
-                .collect(Collectors.toList());
+                .map(cartItem -> CartResponseDto.from(cartItem))
+                .toList();
     }
 
     private Cart validateCart(String userEmail) {
@@ -57,12 +57,13 @@ public class CartService {
     }
 
     @Transactional
-    public void addCart(String userEmail, Long itemId) {
+    public CartResponseDto addCart(String userEmail, Long itemId) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new SessionExpiredException());
         Items item = itemsRepository.findById(itemId).orElseThrow(() -> new ItemsException(BAD_REQUEST_ITEMS_READ));
         CartItem cartItem = CartItem.createCartItem(item);
-
         saveOrUpdate(user, cartItem);
+
+        return CartResponseDto.from(cartItem);
     }
 
     private void saveOrUpdate(User user, CartItem cartItem) {

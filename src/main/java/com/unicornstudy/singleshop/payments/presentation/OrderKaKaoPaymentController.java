@@ -1,7 +1,7 @@
 package com.unicornstudy.singleshop.payments.presentation;
 
 import com.unicornstudy.singleshop.carts.application.CartService;
-import com.unicornstudy.singleshop.carts.application.dto.ReadCartResponseDto;
+import com.unicornstudy.singleshop.carts.application.dto.CartResponseDto;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
 import com.unicornstudy.singleshop.orders.application.OrderService;
@@ -34,7 +34,7 @@ public class OrderKaKaoPaymentController {
 
     @GetMapping
     public ResponseEntity requestReady(@LoginUser SessionUser user, HttpSession httpSession) {
-        List<ReadCartResponseDto> carts = cartService.findAllCartItemListByUser(user.getEmail());
+        List<CartResponseDto> carts = cartService.findAllCartItemListByUser(user.getEmail());
 
         KaKaoReadyRequestDto readyRequestDto = KaKaoReadyRequestDto.of(kaKaoConfiguration.getCid(), kaKaoConfiguration.getApprovalUrl(), kaKaoConfiguration.getCancelUrl(), kaKaoConfiguration.getFailUrl(), "주문 결제", user.getEmail(), convertItemName(carts), String.valueOf(carts.size()), convertTotalAmount(carts, user.getRole()), "0");
         KaKaoReadyResponseDto readyResponse = paymentsService.requestKaKaoToReady(readyRequestDto).block();

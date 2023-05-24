@@ -66,8 +66,6 @@ The response body will include an error providing further information
 
 === 1. CREATE Items
 
-==== 상품생성
-
 `*_1. Success_*`
 
 **request-fields**
@@ -80,46 +78,200 @@ include::{snippets}/items/create/successful/http-request.adoc[]
 **Example response**
 include::{snippets}/items/create/successful/http-response.adoc[]
 
+**response-fields**
+include::{snippets}/items/create/successful/response-fields.adoc[]
+
+
 ---
 
 `*_2. Fail_*`
 
 **request-fields**
-include::{snippets}/items/create/failure/request-fields.adoc[]
+include::{snippets}/items/create/failure/childCategory/null/request-fields.adoc[]
 
 **Example request**
-include::{snippets}/items/create/failure/http-request.adoc[]
+include::{snippets}/items/create/failure/childCategory/null/http-request.adoc[]
 
 **Example response**
-include::{snippets}/items/create/failure/http-response.adoc[]
+include::{snippets}/items/create/failure/childCategory/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/childCategory/null/response-fields.adoc[]
 
 ---
 
-==== 상품변경
+**request-fields**
+include::{snippets}/items/create/failure/childCategory/zero/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/childCategory/zero/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/childCategory/zero/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/childCategory/zero/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/description//request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/description/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/description/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/description/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/name//request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/name/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/name/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/name/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/parentCategory/null/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/parentCategory/null/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/parentCategory/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/parentCategory/null/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/parentCategory/zero/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/parentCategory/zero/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/parentCategory/zero/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/parentCategory/zero/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/price/minus/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/price/minus/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/price/minus/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/price/minus/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/price/null/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/price/null/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/price/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/price/null/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/quantity/null/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/quantity/null/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/quantity/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/quantity/null/response-fields.adoc[]
+
+---
+
+**request-fields**
+include::{snippets}/items/create/failure/zero/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/create/failure/zero/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/create/failure/zero/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/create/failure/zero/response-fields.adoc[]
+
+---
+
+=== 2. UPDATE Items
 
 `*_1. Success_*`
 
 **request-fields**
 include::{snippets}/items/update/successful/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/items/update/successful/http-request.adoc[]
 
 **Example response**
 include::{snippets}/items/update/successful/http-response.adoc[]
 
+**response-fields**
+include::{snippets}/items/update/successful/response-fields.adoc[]
+
+
 ---
 
 `*_2. Fail_*`
 
 **request-fields**
-include::{snippets}/items/update/successful/request-fields.adoc[]
+include::{snippets}/items/update/failure/request-fields.adoc[]
+
+**Example-request**
+include::{snippets}/items/update/failure/http-request.adoc[]
 
 **Example response**
 include::{snippets}/items/update/failure/http-response.adoc[]
 
+**response-fields**
+include::{snippets}/items/update/failure/response-fields.adoc[]
+
 NOTE: 요청 본문의 필드 값에 대한 유효성을 지키지 않을 경우 create 실패 응답과 동일합니다.
 
-==== 상품삭제
+---
+
+=== 3. DELETE Items
 
 `*_1. Success_*`
+
+**request-parameters**
+include::{snippets}/items/delete/successful/path-parameters.adoc[]
+
+**Example-request**
+include::{snippets}/items/delete/successful/http-request.adoc[]
 
 **Example response**
 include::{snippets}/items/delete/successful/http-response.adoc[]
@@ -128,5 +280,290 @@ include::{snippets}/items/delete/successful/http-response.adoc[]
 
 `*_2. Fail_*`
 
+**path-parameters**
+include::{snippets}/items/delete/failure/path-parameters.adoc[]
+
+**Example-request**
+include::{snippets}/items/delete/failure/http-request.adoc[]
+
 **Example response**
 include::{snippets}/items/delete/failure/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/delete/failure/response-fields.adoc[]
+
+---
+=== 4. READ Items
+==== 내용, 상품 이름, 가격으로 검색
+
+`*_1. Success_*`
+
+**path-parameters**
+include::{snippets}/items/read/successful/path-parameters.adoc[]
+
+**query-parameters**
+include::{snippets}/items/read/successful/query-parameters.adoc[]
+
+**Example-request**
+include::{snippets}/items/read/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/read/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/read/successful/response-fields.adoc[]
+
+---
+
+==== 모든 상품 조회
+
+`*_1. Success_*`
+
+**Example-request**
+include::{snippets}/items/read/successful/all/http-request.adoc[]
+
+**Example response**
+include::{snippets}/items/read/successful/all/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/items/read/successful/all/response-fields.adoc[]
+
+== Cart API
+
+=== 1. CREATE Cart
+
+`*_1. Success_*`
+
+**path-parameters**
+
+include::{snippets}/cart/create/successful/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/create/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/create/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/create/successful/response-fields.adoc[]
+
+---
+
+`*_1. Fail_*`
+
+**path-parameters**
+include::{snippets}/cart/create/failure/null/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/create/failure/null/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/create/failure/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/create/failure/null/response-fields.adoc[]
+
+---
+
+**path-parameters**
+include::{snippets}/cart/create/failure/session/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/create/failure/session/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/create/failure/session/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/create/failure/session/response-fields.adoc[]
+
+---
+
+=== 2. DELETE Cart
+`*_1. Success_*`
+
+**path-parameters**
+include::{snippets}/cart/delete/successful/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/delete/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/delete/successful/http-response.adoc[]
+
+---
+
+`*_1. Fail_*`
+
+**path-parameters**
+include::{snippets}/cart/delete/failure/null/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/delete/failure/null/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/delete/failure/null/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/delete/failure/null/response-fields.adoc[]
+
+---
+
+**path-parameters**
+include::{snippets}/cart/delete/failure/noitems/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/cart/delete/failure/noitems/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/delete/failure/noitems/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/delete/failure/noitems/response-fields.adoc[]
+
+---
+
+=== 3. READ Cart
+
+`*_1. Success_*`
+
+**Example request**
+include::{snippets}/cart/read/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/read/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/read/successful/response-fields.adoc[]
+
+---
+
+`*_2. Fail_*`
+
+**Example request**
+include::{snippets}/cart/read/failure/http-request.adoc[]
+
+**Example response**
+include::{snippets}/cart/read/failure/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/cart/read/failure/response-fields.adoc[]
+
+== Orders API
+
+=== 1. CREATE ReOrder
+`*_1. Success_*`
+
+**path-parameters**
+include::{snippets}/order/create/reorder/successful/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/order/create/reorder/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/order/create/reorder/successful/http-response.adoc[]
+
+---
+
+`*_2. Fail_*`
+
+**path-parameters**
+include::{snippets}/order/create/reorder/failure/path-parameters.adoc[]
+
+**Example request**
+include::{snippets}/order/create/reorder/failure/http-request.adoc[]
+
+**Example response**
+include::{snippets}/order/create/reorder/failure/http-response.adoc[]
+**response-fields**
+include::{snippets}/order/create/reorder/failure/response-fields.adoc[]
+
+---
+
+=== 2. READ Orders
+==== 사용자의 전체 주문 조회
+
+`*_1. Success_*`
+
+**Example request**
+include::{snippets}/order/read/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/order/read/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/order/read/successful/response-fields.adoc[]
+
+---
+==== 사용자의 주문 상세 조회
+
+`*_1. Success_*`
+
+**Example request**
+include::{snippets}/order/read/detail/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/order/read/detail/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/order/read/detail/successful/response-fields.adoc[]
+
+== Subscription API
+
+=== 1. READ Subscriptions
+
+`*_1. Success_*`
+
+**Example request**
+include::{snippets}/subscription/read/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/subscription/read/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/subscription/read/successful/response-fields.adoc[]
+
+== User API
+
+=== 1. UPDATE Address
+
+`*_1. Success_*`
+
+**request-fields**
+include::{snippets}/user/create/address/successful/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/user/create/address/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/user/create/address/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/user/create/address/successful/response-fields.adoc[]
+---
+
+`*_1. Success_*`
+
+**request-fields**
+include::{snippets}/user/create/address/failure/city/request-fields.adoc[]
+
+**Example request**
+include::{snippets}/user/create/address/failure/city/http-request.adoc[]
+
+**Example response**
+include::{snippets}/user/create/address/failure/city/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/user/create/address/failure/city/response-fields.adoc[]
+---
+
+=== 2. READ Address
+
+**Example request**
+include::{snippets}/user/read/address/successful/http-request.adoc[]
+
+**Example response**
+include::{snippets}/user/read/address/successful/http-response.adoc[]
+
+**response-fields**
+include::{snippets}/user/read/address/successful/response-fields.adoc[]

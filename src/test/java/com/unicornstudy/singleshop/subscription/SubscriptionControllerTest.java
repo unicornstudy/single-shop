@@ -13,12 +13,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +32,12 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SubscriptionController.class)
 @WithMockUser(roles = "USER")
+@ExtendWith(RestDocumentationExtension.class)
 public class SubscriptionControllerTest {
 
     private MockMvc mvc;
@@ -58,8 +68,13 @@ public class SubscriptionControllerTest {
     private Pageable pageable;
 
     @BeforeEach
-    public void setUp() {
-        setMvc();
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
+        mvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentation))
+                .build();
+
         user = TestSetting.setUser(TestSetting.setAddress());
         pageable = TestSetting.setPageable();
         payment = TestSetting.setPayment();
@@ -78,15 +93,18 @@ public class SubscriptionControllerTest {
         mvc
                 .perform(get("/api/subscription").session(session))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(result.size())))
                 .andDo(print())
-                .andExpect(jsonPath("$.*", hasSize(result.size())));
+                .andDo(document("subscription/read/successful",
+                        preprocessRequest(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].payDate").description("PayDate of the subscription"),
+                                fieldWithPath("[].payment.tid").description("Payment tid of the subscription"),
+                                fieldWithPath("[].payment.paymentKind").description("PaymentKind of the subscription"),
+                                fieldWithPath("[].payment.sid").description("Payment sid of the subscription"),
+                                fieldWithPath("[].payment.price").description("Price of the subscription")
+                        )));
 
     }
 
-    private void setMvc() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
 }

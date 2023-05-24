@@ -64,7 +64,7 @@ public class TestSetting {
     }
 
     public static Address setAddress() {
-        return new Address("testCity", "testStreet", "testZipcode");
+        return new Address("testCity", "testStreet", "12345");
     }
 
     public static Delivery setDelivery(Address address) {

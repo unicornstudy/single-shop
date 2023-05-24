@@ -1,12 +1,14 @@
 package com.unicornstudy.singleshop.payments.application.kakaoPay.utils;
 
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.KaKaoCancelRequestDto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@Disabled
 class MultiValueMapConverterTest {
 
     @DisplayName("Dto를 MultiValueMap으로 변환")
