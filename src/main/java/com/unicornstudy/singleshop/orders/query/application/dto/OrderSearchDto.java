@@ -1,29 +1,27 @@
-package com.unicornstudy.singleshop.orders.application.dto;
+package com.unicornstudy.singleshop.orders.query.application.dto;
 
-import com.unicornstudy.singleshop.orders.domain.OrderStatus;
-import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.orders.command.domain.OrderStatus;
+import com.unicornstudy.singleshop.orders.query.domain.OrderIndex;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
-public class OrderDto {
+public class OrderSearchDto {
 
-    private final LocalDateTime orderDate;
+    private final String orderDate;
     private final OrderStatus status;
     private final Payment payment;
 
     @Builder
-    public OrderDto(LocalDateTime orderDate, OrderStatus status, Payment payment) {
+    public OrderSearchDto(String orderDate, OrderStatus status, Payment payment) {
         this.orderDate = orderDate;
         this.status = status;
         this.payment = payment;
     }
 
-    public static OrderDto from(Orders order) {
-        return OrderDto.builder()
+    public static OrderSearchDto from(OrderIndex order) {
+        return OrderSearchDto.builder()
                 .orderDate(order.getOrderDate())
                 .status(order.getStatus())
                 .payment(order.getPayment())

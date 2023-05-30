@@ -2,9 +2,9 @@ package com.unicornstudy.singleshop.items.command.application.dto;
 
 import com.unicornstudy.singleshop.exception.items.validator.ValidChildCategory;
 import com.unicornstudy.singleshop.exception.items.validator.ValidParentCategory;
-import com.unicornstudy.singleshop.items.domain.ChildCategory;
-import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.domain.ParentCategory;
+import com.unicornstudy.singleshop.items.command.domain.ChildCategory;
+import com.unicornstudy.singleshop.items.command.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.ParentCategory;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

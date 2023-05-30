@@ -9,13 +9,16 @@ import com.unicornstudy.singleshop.delivery.domain.Address;
 import com.unicornstudy.singleshop.delivery.domain.Delivery;
 import com.unicornstudy.singleshop.delivery.domain.DeliveryStatus;
 import com.unicornstudy.singleshop.exception.orders.*;
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import com.unicornstudy.singleshop.items.command.application.OptimisticLockQuantityFacade;
-import com.unicornstudy.singleshop.orders.application.OrderService;
-import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
-import com.unicornstudy.singleshop.orders.domain.*;
-import com.unicornstudy.singleshop.orders.domain.repository.OrderItemRepository;
-import com.unicornstudy.singleshop.orders.domain.repository.OrderRepository;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderDto;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderIndexDto;
+import com.unicornstudy.singleshop.orders.command.domain.OrderItem;
+import com.unicornstudy.singleshop.orders.command.domain.OrderStatus;
+import com.unicornstudy.singleshop.orders.command.domain.Orders;
+import com.unicornstudy.singleshop.orders.command.domain.repository.OrderItemRepository;
+import com.unicornstudy.singleshop.orders.command.domain.repository.OrderRepository;
 import com.unicornstudy.singleshop.payments.domain.Payment;
 import com.unicornstudy.singleshop.user.domain.User;
 import com.unicornstudy.singleshop.user.domain.repository.UserRepository;
@@ -110,14 +113,14 @@ public class OrderServiceTest {
         when(cartRepository.findCartByUserEmail(user.getEmail())).thenReturn(Optional.ofNullable(cart));
         when(orderRepository.save(any(Orders.class))).thenReturn(order);
 
-        Long result = orderService.order(user.getEmail(), payment);
+        Long result = orderService.order(user.getEmail(), payment).getId();
         assertThat(result).isEqualTo(order.getId());
     }
 
     @Test
     public void 주문_취소() {
         when(orderRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(order));
-        OrderDto orderDto = orderService.cancel(order.getId());
+        OrderIndexDto orderDto = orderService.cancel(order.getId());
         assertThat(orderDto.getPayment().getTid()).isEqualTo(payment.getTid());
     }
 

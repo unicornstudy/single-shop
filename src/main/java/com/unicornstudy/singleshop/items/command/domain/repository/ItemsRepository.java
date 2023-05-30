@@ -1,6 +1,6 @@
-package com.unicornstudy.singleshop.items.domain.repository;
+package com.unicornstudy.singleshop.items.command.domain.repository;
 
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemsRepository extends JpaRepository<Items, Long> {

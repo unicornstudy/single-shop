@@ -9,9 +9,9 @@ import com.unicornstudy.singleshop.exception.carts.CartItemNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.CartNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.SessionExpiredException;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,7 +32,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.unicornstudy.singleshop.exception.ErrorCode.BAD_REQUEST_ITEMS_READ;

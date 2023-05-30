@@ -3,7 +3,7 @@ package com.unicornstudy.singleshop.payments.application.kakaoPay.utils;
 import com.unicornstudy.singleshop.carts.application.dto.CartResponseDto;
 import com.unicornstudy.singleshop.carts.domain.CartItem;
 import com.unicornstudy.singleshop.config.TestSetting;
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import com.unicornstudy.singleshop.user.domain.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

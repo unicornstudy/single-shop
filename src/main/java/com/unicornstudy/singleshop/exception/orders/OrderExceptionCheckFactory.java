@@ -1,9 +1,9 @@
 package com.unicornstudy.singleshop.exception.orders;
 
 import com.unicornstudy.singleshop.delivery.domain.DeliveryStatus;
-import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.orders.domain.OrderStatus;
-import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.items.command.domain.Items;
+import com.unicornstudy.singleshop.orders.command.domain.OrderStatus;
+import com.unicornstudy.singleshop.orders.command.domain.Orders;
 import com.unicornstudy.singleshop.user.domain.User;
 
 import java.util.Optional;

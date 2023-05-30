@@ -1,20 +1,18 @@
 package com.unicornstudy.singleshop.items.query;
 
 import com.unicornstudy.singleshop.config.TestSetting;
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import com.unicornstudy.singleshop.items.query.application.ItemsSearchService;
 import com.unicornstudy.singleshop.items.query.application.dto.ItemsSearchDto;
 import com.unicornstudy.singleshop.items.query.domain.ItemsIndex;
 import com.unicornstudy.singleshop.items.query.presentation.ItemsSearchController;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

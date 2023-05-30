@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.payments.presentation;
 
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.PaymentHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

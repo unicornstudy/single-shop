@@ -2,7 +2,7 @@ package com.unicornstudy.singleshop.user.domain;
 
 import com.unicornstudy.singleshop.carts.domain.Cart;
 import com.unicornstudy.singleshop.delivery.domain.Address;
-import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.orders.command.domain.Orders;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,10 +1,10 @@
-package com.unicornstudy.singleshop.orders.presentation;
+package com.unicornstudy.singleshop.orders.command.presentation;
 
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
-import com.unicornstudy.singleshop.orders.application.OrderService;
-import com.unicornstudy.singleshop.orders.application.dto.OrderDetailDto;
-import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderDetailDto;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

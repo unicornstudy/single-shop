@@ -1,8 +1,8 @@
 package com.unicornstudy.singleshop.items.command.application.dto;
 
-import com.unicornstudy.singleshop.items.domain.ChildCategory;
-import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.domain.ParentCategory;
+import com.unicornstudy.singleshop.items.command.domain.ChildCategory;
+import com.unicornstudy.singleshop.items.command.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.ParentCategory;
 import com.unicornstudy.singleshop.items.query.domain.ItemsIndex;
 import lombok.Builder;
 import lombok.Getter;

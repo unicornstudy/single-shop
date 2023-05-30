@@ -40,10 +40,10 @@ public class ItemsAspect {
 
         future.whenComplete((result, exception) -> {
             if (exception != null) {
-                log.error("메시지 전달 실패 Dead Letter Queue에 메시지 전송");
+                log.error("상품 메시지 전달 실패 Dead Letter Queue에 메시지 전송");
                 kafkaTemplate.send(dlq, payload);
             } else {
-                log.info("메시지 큐에 전송 성공");
+                log.info("상품 메시지 큐에 전송 성공");
             }
         });
     }

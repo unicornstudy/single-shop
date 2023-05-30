@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.items.domain;
+package com.unicornstudy.singleshop.items.command.domain;
 
 import com.unicornstudy.singleshop.exception.orders.OrderExceptionCheckFactory;
 import jakarta.persistence.*;

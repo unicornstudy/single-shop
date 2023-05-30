@@ -4,7 +4,7 @@ import com.unicornstudy.singleshop.exception.carts.CartException;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
 import com.unicornstudy.singleshop.exception.payments.SubscriptionApproveException;
 import com.unicornstudy.singleshop.exception.util.BodyCreator;
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.exception.orders.OrderException;
 import com.unicornstudy.singleshop.exception.payments.ApproveException;
 import com.unicornstudy.singleshop.exception.payments.PaymentsException;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice

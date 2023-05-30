@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.delivery.domain;
 
-import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.orders.command.domain.Orders;
 import jakarta.persistence.*;
 import lombok.Getter;
 
