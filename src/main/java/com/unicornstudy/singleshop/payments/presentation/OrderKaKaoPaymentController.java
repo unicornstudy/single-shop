@@ -4,7 +4,7 @@ import com.unicornstudy.singleshop.carts.application.CartService;
 import com.unicornstudy.singleshop.carts.application.dto.CartResponseDto;
 import com.unicornstudy.singleshop.oauth2.LoginUser;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.KaKaoPaymentService;
 import com.unicornstudy.singleshop.payments.application.kakaoPay.dto.*;
 import com.unicornstudy.singleshop.payments.domain.Payment;
@@ -59,7 +59,8 @@ public class OrderKaKaoPaymentController {
                 .tid(tid)
                 .paymentKind("kakao")
                 .price(readyRequestDto.getTotalAmount())
-                .build());
+                .build())
+                .getId();
         KaKaoApproveResponseDto responseDto = paymentsService.requestKaKaoToApprove(approveRequestDto, orderId).block();
         httpSession.removeAttribute("tid");
         httpSession.removeAttribute("readyRequestDto");

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicornstudy.singleshop.config.TestSetting;
 import com.unicornstudy.singleshop.delivery.domain.Address;
 import com.unicornstudy.singleshop.oauth2.dto.SessionUser;
-import com.unicornstudy.singleshop.orders.application.OrderService;
+import com.unicornstudy.singleshop.orders.command.application.OrderService;
 import com.unicornstudy.singleshop.user.application.UserService;
 import com.unicornstudy.singleshop.user.application.dto.AddressResponseDto;
 import com.unicornstudy.singleshop.user.application.dto.AddressRequestDto;

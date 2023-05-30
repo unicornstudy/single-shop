@@ -2,13 +2,9 @@ package com.unicornstudy.singleshop.items.command.application;
 
 import com.unicornstudy.singleshop.items.command.application.dto.ItemsRequestDto;
 import com.unicornstudy.singleshop.items.command.application.dto.ItemsResponseDto;
-import com.unicornstudy.singleshop.items.domain.ChildCategory;
-import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.domain.ParentCategory;
-import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
+import com.unicornstudy.singleshop.items.command.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.repository.ItemsRepository;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
-import com.unicornstudy.singleshop.items.query.domain.ItemsIndex;
-import com.unicornstudy.singleshop.items.query.domain.repository.ItemsSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

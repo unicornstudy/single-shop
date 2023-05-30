@@ -1,6 +1,6 @@
-package com.unicornstudy.singleshop.orders.domain.repository;
+package com.unicornstudy.singleshop.orders.command.domain.repository;
 
-import com.unicornstudy.singleshop.orders.domain.OrderItem;
+import com.unicornstudy.singleshop.orders.command.domain.OrderItem;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

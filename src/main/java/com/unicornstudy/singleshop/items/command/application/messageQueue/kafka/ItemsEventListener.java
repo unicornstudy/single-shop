@@ -16,6 +16,7 @@ public class ItemsEventListener {
 
     @KafkaListener(topics = "ItemsCreateAndUpdateTopic", groupId = "items")
     public void createAndUpdateItemsIndex(ItemsResponseDto itemsResponseDto) {
+        System.out.println("메시지큐 도착");
         log.info("ItemsCreateAndUpdateTopic 큐 메시지 도착");
         itemsSearchRepository.save(itemsResponseDto.toEntity());
     }

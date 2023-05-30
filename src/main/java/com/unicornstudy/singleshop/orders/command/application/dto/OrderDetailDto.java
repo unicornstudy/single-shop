@@ -1,6 +1,6 @@
-package com.unicornstudy.singleshop.orders.application.dto;
+package com.unicornstudy.singleshop.orders.command.application.dto;
 
-import com.unicornstudy.singleshop.orders.domain.OrderItem;
+import com.unicornstudy.singleshop.orders.command.domain.OrderItem;
 import lombok.Builder;
 import lombok.Getter;
 

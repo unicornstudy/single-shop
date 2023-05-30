@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.orders.application;
+package com.unicornstudy.singleshop.orders.command.application;
 
 import com.unicornstudy.singleshop.carts.domain.Cart;
 import com.unicornstudy.singleshop.carts.domain.repository.CartRepository;
@@ -6,16 +6,17 @@ import com.unicornstudy.singleshop.carts.application.CartService;
 import com.unicornstudy.singleshop.exception.carts.CartNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.SessionExpiredException;
 import com.unicornstudy.singleshop.delivery.domain.Delivery;
-import com.unicornstudy.singleshop.items.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.Items;
 import com.unicornstudy.singleshop.items.command.application.OptimisticLockQuantityFacade;
-import com.unicornstudy.singleshop.orders.domain.OrderStatus;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderDetailDto;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderIndexDto;
+import com.unicornstudy.singleshop.orders.command.domain.OrderStatus;
 import com.unicornstudy.singleshop.payments.domain.Payment;
-import com.unicornstudy.singleshop.orders.application.dto.OrderDetailDto;
-import com.unicornstudy.singleshop.orders.application.dto.OrderDto;
-import com.unicornstudy.singleshop.orders.domain.OrderItem;
-import com.unicornstudy.singleshop.orders.domain.repository.OrderItemRepository;
-import com.unicornstudy.singleshop.orders.domain.repository.OrderRepository;
-import com.unicornstudy.singleshop.orders.domain.Orders;
+import com.unicornstudy.singleshop.orders.command.application.dto.OrderDto;
+import com.unicornstudy.singleshop.orders.command.domain.OrderItem;
+import com.unicornstudy.singleshop.orders.command.domain.repository.OrderItemRepository;
+import com.unicornstudy.singleshop.orders.command.domain.repository.OrderRepository;
+import com.unicornstudy.singleshop.orders.command.domain.Orders;
 import com.unicornstudy.singleshop.exception.orders.OrderExceptionCheckFactory;
 import com.unicornstudy.singleshop.exception.orders.OrderNotFoundException;
 import com.unicornstudy.singleshop.user.domain.User;
@@ -66,7 +67,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long order(String userEmail, Payment payment) {
+    public OrderIndexDto order(String userEmail, Payment payment) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new SessionExpiredException());
         OrderExceptionCheckFactory.checkAddress(user);
         Cart cart = cartRepository.findCartByUserEmail(userEmail).orElseThrow(() -> new CartNotFoundException());
@@ -74,7 +75,7 @@ public class OrderService {
         Orders order = Orders.createOrder(user, convertCartItemToOrderItem(items), payment, Delivery.createDelivery(user.getAddress()));
         user.resetCart();
 
-        return orderRepository.save(order).getId();
+        return OrderIndexDto.from(order);
     }
 
     private List<OrderItem> convertCartItemToOrderItem(List<Items> items) {
@@ -87,22 +88,23 @@ public class OrderService {
     }
 
     @Transactional
-    public void handleOrderPaymentError(Long id) {
+    public OrderDto handleOrderPaymentError(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
         OrderExceptionCheckFactory.checkOrderStatus(order);
         order.cancelDelivery();
         changeOrderStatusAndQuantity(order);
+        return OrderDto.from(order);
     }
 
     @Transactional
-    public OrderDto cancel(Long id) {
+    public OrderIndexDto cancel(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException());
         OrderExceptionCheckFactory.checkOrderStatus(order);
         OrderExceptionCheckFactory.checkDelivery(order);
         order.cancelDelivery();
         changeOrderStatusAndQuantity(order);
 
-        return OrderDto.from(order);
+        return OrderIndexDto.from(order);
     }
 
     private void changeOrderStatusAndQuantity(Orders order) {

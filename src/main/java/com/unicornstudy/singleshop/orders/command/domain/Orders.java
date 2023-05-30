@@ -1,4 +1,4 @@
-package com.unicornstudy.singleshop.orders.domain;
+package com.unicornstudy.singleshop.orders.command.domain;
 
 import com.unicornstudy.singleshop.delivery.domain.Delivery;
 import com.unicornstudy.singleshop.payments.domain.Payment;

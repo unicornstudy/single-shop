@@ -1,6 +1,6 @@
 package com.unicornstudy.singleshop.exception.items.validator;
 
-import com.unicornstudy.singleshop.items.domain.ChildCategory;
+import com.unicornstudy.singleshop.items.command.domain.ChildCategory;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

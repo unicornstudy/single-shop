@@ -8,8 +8,8 @@ import com.unicornstudy.singleshop.carts.application.dto.CartResponseDto;
 import com.unicornstudy.singleshop.exception.carts.CartItemNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.CartNotFoundException;
 import com.unicornstudy.singleshop.exception.carts.SessionExpiredException;
-import com.unicornstudy.singleshop.items.domain.Items;
-import com.unicornstudy.singleshop.items.domain.repository.ItemsRepository;
+import com.unicornstudy.singleshop.items.command.domain.Items;
+import com.unicornstudy.singleshop.items.command.domain.repository.ItemsRepository;
 import com.unicornstudy.singleshop.exception.items.ItemsException;
 import com.unicornstudy.singleshop.user.domain.User;
 import com.unicornstudy.singleshop.user.domain.repository.UserRepository;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.unicornstudy.singleshop.exception.ErrorCode.BAD_REQUEST_ITEMS_READ;
 
